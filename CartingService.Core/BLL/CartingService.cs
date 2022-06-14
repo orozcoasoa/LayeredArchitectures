@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CartingService.DAL;
+using CartingService.Core.DAL;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CartingService.BLL
+namespace CartingService.Core.BLL
 {
     public class CartingService : ICartingService
     {
@@ -37,7 +37,15 @@ namespace CartingService.BLL
                     cartDAO.Items.Add(_mapper.Map<ItemDAO>(item));
 
             }
-            await _context.SaveChangesAsync();
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                var entry = ex.Entries.Single();
+                entry.OriginalValues.SetValues(entry.CurrentValues);
+            }
         }
         public async Task<IList<Item>> GetCartItemsAsync(Guid cartId)
         {
@@ -52,7 +60,10 @@ namespace CartingService.BLL
         {
             var cartDAO = await _context.Carts.Include(c => c.Items).FirstOrDefaultAsync(c => c.Id == cartId);
             if(cartDAO == null)
+            {
                 cartDAO = new CartDAO() { Id = cartId };
+                _context.Add(cartDAO);
+            }
             if (item != null)
             {
                 var itemDAO = _mapper.Map<Item, ItemDAO>(item);
@@ -71,13 +82,17 @@ namespace CartingService.BLL
             }
             return _mapper.Map<Cart>(cartDAO);
         }
-        public async Task RemoveItemAsync(Guid cartId, Item item)
+        public async Task RemoveItemAsync(Guid cartId, int itemId)
         {
             var cartDAO = await _context.Carts.Include(c => c.Items).FirstOrDefaultAsync(c => c.Id == cartId);
             if (cartDAO == null)
                 return;
-            cartDAO.Items.Remove(_mapper.Map<ItemDAO>(item));
-            await _context.SaveChangesAsync();
+            var itemToRemove = cartDAO.Items.Find(i => i.Id == itemId);
+            if (itemToRemove != null)
+            {
+                _context.Remove(itemToRemove);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }
