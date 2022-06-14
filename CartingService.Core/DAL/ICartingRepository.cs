@@ -10,8 +10,8 @@ namespace CartingService.Core.DAL
     {
         Task<CartDAO> CreateCartAsync(Guid id);
         Task<CartDAO> GetCartAsync(Guid id);
-        Task AddItemToCart(Guid id, ItemDAO item);
-        Task RemoveItemFromCart(Guid id, ItemDAO item);
-        Task UpdateItemQuantity(Guid id, int itemId, double quantity);
+        Task AddItemToCartAsync(Guid id, ItemDAO item);
+        Task RemoveItemFromCartAsync(Guid id, int itemId);
+        Task UpdateItemQuantityAsync(Guid id, int itemId, double quantity);
     }
 }

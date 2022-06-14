@@ -14,5 +14,6 @@ namespace CartingService.Core.DAL
         public byte[]? Image { get; set; }
         public decimal Price { get; set; }
         public double Quantity { get; set; }
+        public CartDAO Cart { get; set; }
     }
 }

@@ -1,4 +1,3 @@
-using CartingService.Core.DAL;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,7 +8,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+CartingService.Core.DAL.Configure.ConfigureServices(builder.Services, "Sample.db");
+CartingService.Core.BLL.Configure.ConfigureServices(builder.Services);
 
 var app = builder.Build();
 

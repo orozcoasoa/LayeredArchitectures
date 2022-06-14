@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace CartingService.Core.BLL
 {
-    public class CartingService : ICartingService
+    public class CartingEFService : ICartingService
     {
         private readonly CartingDbContext _context;
         private readonly IMapper _mapper;
 
-        public CartingService(CartingDbContext context, IMapper mapper)
+        public CartingEFService(CartingDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
@@ -53,13 +53,13 @@ namespace CartingService.Core.BLL
             if (cartDAO == null)
                 return new List<Item>();
             else
-                return _mapper.Map<List<ItemDAO>,List<Item>>(cartDAO.Items);
+                return _mapper.Map<List<ItemDAO>, List<Item>>(cartDAO.Items);
 
         }
         public async Task<Cart> InitializeCartAsync(Guid cartId, Item? item)
         {
             var cartDAO = await _context.Carts.Include(c => c.Items).FirstOrDefaultAsync(c => c.Id == cartId);
-            if(cartDAO == null)
+            if (cartDAO == null)
             {
                 cartDAO = new CartDAO() { Id = cartId };
                 _context.Add(cartDAO);
@@ -67,7 +67,7 @@ namespace CartingService.Core.BLL
             if (item != null)
             {
                 var itemDAO = _mapper.Map<Item, ItemDAO>(item);
-                cartDAO.Items = new List<ItemDAO>() { itemDAO};
+                cartDAO.Items = new List<ItemDAO>() { itemDAO };
             }
             else
                 cartDAO.Items = new List<ItemDAO>() { };
