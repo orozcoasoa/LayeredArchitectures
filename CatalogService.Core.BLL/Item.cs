@@ -1,27 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CatalogService.Core.DAL
+namespace CatalogService.Core.BLL
 {
     public class Item
     {
         public int Id { get; set; }
-        [Required]
-        [StringLength(50, ErrorMessage = "Max allowed characters:{0}")]
         public string Name { get; set; }
         //TODO can contain html.
         public string Description { get; set; }
         //TODO URL.
         public string Image { get; set; }
-        [Required]
-        public virtual Category Category { get; set; }
-        [Required]
+        public int CategoryId { get; set; }
+        public Category Category { get; set; }
         public decimal Price { get; set; }
-        [Required]
         public int Amount { get; set; }
     }
 }

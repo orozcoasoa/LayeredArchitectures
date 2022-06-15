@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CatalogService.Core.DAL
 {
@@ -9,6 +10,8 @@ namespace CatalogService.Core.DAL
         [StringLength(50, ErrorMessage ="Max allowed characters:{0}")]
         public string Name { get; set; }
         public string Image { get; set; }
-        public Category ParentCategory { get; set; }
+        [ForeignKey("Category")]
+        public int? ParentCategoryId { get; set; }
+        public virtual Category ParentCategory { get; set; }
     }
 }
