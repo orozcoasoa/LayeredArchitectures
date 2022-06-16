@@ -5,12 +5,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CatalogService.UnitTests
 {
-    public class CatalogEFServiceTest
+    public class CatalogEFServiceCategoryTest
     {
         private static IMapper _mapper;
         private readonly CatalogServiceDbContext _context;
 
-        public CatalogEFServiceTest()
+        public CatalogEFServiceCategoryTest()
         {
             var contextOptions = new DbContextOptionsBuilder<CatalogServiceDbContext>()
                                 .UseInMemoryDatabase("CatalogServiceTest")
