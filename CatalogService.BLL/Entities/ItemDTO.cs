@@ -5,26 +5,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CatalogService.Core.DAL
+namespace CatalogService.BLL.Entities
 {
-    public class Item
+    public class ItemDTO
     {
-        public int Id { get; set; }
         [Required]
-        [StringLength(50, ErrorMessage = "Max allowed characters:{0}")]
+        [StringLength(50)]
         public string Name { get; set; }
         //TODO can contain html.
-        public string Description { get; set; }
+        public string? Description { get; set; }
         //TODO URL.
-        public string Image { get; set; }
-        public virtual int CategoryId { get; set; } 
+        public string? Image { get; set; }
         [Required]
-        public virtual Category Category { get; set; }
+        public int CategoryId { get; set; }
         [Required]
-        [Range(0, double.MaxValue)]
+        [Range(0, (double)decimal.MaxValue)]
         public decimal Price { get; set; }
         [Required]
-        [Range(1, double.MaxValue)]
+        [Range (1, int.MaxValue)]
         public int Amount { get; set; }
     }
 }

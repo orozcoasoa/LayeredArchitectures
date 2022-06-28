@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CatalogService.Core.DAL
+namespace CatalogService.DAL
 {
     public class Category
     {

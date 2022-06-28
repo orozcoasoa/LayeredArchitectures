@@ -1,49 +1,39 @@
 ﻿using AutoMapper;
-using CatalogService.Core.DAL;
+using CatalogService;
+using CatalogService.BLL.Entities;
+using CatalogService.BLL.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CatalogService.Core.BLL
+namespace CatalogService.BLL
 {
     public class CatalogEFService : ICatalogService
     {
-        private readonly CatalogServiceDbContext _context;
+        private readonly DAL.CatalogServiceDbContext _context;
         private readonly IMapper _mapper;
 
-        public CatalogEFService(CatalogServiceDbContext context, IMapper mapper)
+        public CatalogEFService(DAL.CatalogServiceDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
 
         #region Category
-        public async Task<Category> AddCategoryAsync(string name, string image, int? parentCategoryId)
+        public async Task<Category> AddCategory(CategoryDTO categoryDTO)
         {
-            DAL.Category parentCat = null;
-            if (parentCategoryId != null)
-            {
-                parentCat = await _context.Categories.FindAsync(parentCategoryId);
-            }
-            await ValidateCategoryNameAsync(name);
-
-            var categoryDAO = new DAL.Category() { Name = name, Image = image, ParentCategory = parentCat };
-            _context.Categories.Add(categoryDAO);
-            await _context.SaveChangesAsync();
-            return _mapper.Map<Category>(categoryDAO);
-        }
-        public async Task<Category> AddCategoryAsync(Category category)
-        {
-            await ValidateCategoryAsync(category);
+            var category = _mapper.Map<Category>(categoryDTO);
+            await ValidateCategory(category);
             var categoryDAO = _mapper.Map<DAL.Category>(category);
             categoryDAO.Id = 0;
-            if (categoryDAO.ParentCategoryId == 0 && 
+            if (categoryDAO.ParentCategoryId == 0 &&
                 !string.IsNullOrEmpty(category.ParentCategory?.Name))
             {
-                var parentCategory = await GetCategoryAsync(category.ParentCategory.Name);
+                var parentCategory = await GetCategory(category.ParentCategory.Name);
                 if (parentCategory != null)
                     categoryDAO.ParentCategoryId = parentCategory.Id;
             }
@@ -51,69 +41,82 @@ namespace CatalogService.Core.BLL
             await _context.SaveChangesAsync();
             return _mapper.Map<Category>(categoryDAO);
         }
-        public async Task DeleteCategoryAsync(int id)
+        public async Task DeleteCategory(int id)
         {
             var category = await _context.Categories
                             .Where(c => c.Id == id)
                             .FirstOrDefaultAsync();
             if (category != null)
             {
+                var items = await _context.Items
+                        .Where(i => i.CategoryId == id)
+                        .ToListAsync();
+                if (items.Any())
+                    _context.Remove(items);
                 _context.Remove(category);
+
                 await _context.SaveChangesAsync();
             }
         }
-        public async Task<List<Category>> GetAllCategoriesAsync()
+        public async Task<List<Category>> GetAllCategories()
         {
             var categories = await _context.Categories.ToListAsync();
             return _mapper.Map<List<DAL.Category>, List<Category>>(categories);
         }
-        public async Task<List<Category>> GetCategoriesAsync(int parentCategoryId)
+        public async Task<List<Category>> GetCategories(int parentCategoryId)
         {
             var categories = await _context.Categories
                             .Where(c => c.ParentCategory.Id == parentCategoryId)
                             .ToListAsync();
             return _mapper.Map<List<DAL.Category>, List<Category>>(categories);
         }
-        public async Task<Category> GetCategoryAsync(int id)
+        public async Task<Category> GetCategory(int id)
         {
             var category = await _context.Categories
                             .Where(c => c.Id == id)
                             .FirstOrDefaultAsync();
             return _mapper.Map<Category>(category);
         }
-        public async Task<Category> GetCategoryAsync(string name)
+        public async Task<Category> GetCategory(string name)
         {
             var category = await _context.Categories
                             .Where(c => c.Name == name)
                             .FirstOrDefaultAsync();
             return _mapper.Map<Category>(category);
         }
-        public async Task UpdateCategoryAsync(Category category)
+        public async Task UpdateCategory(int id, CategoryDTO categoryDTO)
         {
+            var category = _mapper.Map<Category>(categoryDTO);
+            category.Id = id;
             ValidateParentCategory(category);
-            var categoryDAO = await _context.Categories.FindAsync(category.Id);
+            var categoryDAO = await _context.Categories
+                                    .Where(c => c.Id == id)
+                                    .Include(c => c.ParentCategory)
+                                    .FirstOrDefaultAsync();
             if (categoryDAO == null)
             {
                 //TODO: custom exception
-                throw new KeyNotFoundException();
+                throw new KeyNotFoundException("Category " + id + " not found.");
             }
             _mapper.Map(category, categoryDAO);
+            if (category.ParentCategory == null)
+                categoryDAO.ParentCategory = null;
             await _context.SaveChangesAsync();
         }
 
-        private async Task ValidateCategoryAsync(Category category)
+        private async Task ValidateCategory(Category category)
         {
-            await ValidateCategoryNameAsync(category.Name);
+            await ValidateCategoryName(category.Name);
             ValidateParentCategory(category);
         }
-        private async Task ValidateCategoryNameAsync(string name)
+        private async Task ValidateCategoryName(string name)
         {
             if (name?.Length > 50)
             {
                 //TODO: create custom exception.
                 throw new ArgumentException("Name", "Max length is 50");
             }
-            var existingCategory = await GetCategoryAsync(name);
+            var existingCategory = await GetCategory(name);
             if (existingCategory != null)
             {
                 //TODO: create custom exception.
@@ -141,56 +144,58 @@ namespace CatalogService.Core.BLL
         #endregion
 
         #region Item
-        public async Task<Item> AddItemAsync(Item item)
+        public async Task<Item> AddItem(ItemDTO itemDTO)
         {
-            await ValidateItemAsync(item);
+            var item = _mapper.Map<Item>(itemDTO);
+            await ValidateItem(item);
             var itemDAO = _mapper.Map<DAL.Item>(item);
             itemDAO.Id = 0;
             _context.Add(itemDAO);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return _mapper.Map<Item>(itemDAO);
         }
-        public async Task<List<Item>> GetAllItemsAsync(){
+        public async Task<List<Item>> GetAllItems() {
             var items = await _context.Items.ToListAsync();
             return _mapper.Map<List<Item>>(items);
         }
-        public async Task<List<Item>> GetItemsAsync(int categoryId)
+        public async Task<IPagedCollection<Item>> GetItems(ItemQuery itemQuery)
         {
-            var items = await _context.Items.Where(i => i.CategoryId==categoryId)
-                                        .ToListAsync();
-            return _mapper.Map<List<Item>>(items);
+            var filter = GetItemFilter(itemQuery);
+            var itemsDAL = await _context.Items
+                        //.Where(i => i.CategoryId == itemQuery.CategoryId)
+                        .Where(filter)
+                        .ToPagedCollectionAsync(itemQuery.Page, itemQuery.Limit);
+
+            var itemsList = _mapper.Map<IPagedCollection<DAL.Item>, IReadOnlyList<Item>>(itemsDAL);
+
+            return new PagedCollection<Item>(itemsList, itemsDAL.ItemCount, itemsDAL.CurrentPageNumber, itemsDAL.PageSize);
         }
-        public async Task<List<Item>> GetItemsAsync(double priceMin, double priceMax)
-        {
-            var items = await _context.Items
-                                .Where(i => (double)i.Price>= priceMin && (double)i.Price<=priceMax)
-                                .ToListAsync();
-            return _mapper.Map<List<Item>>(items);
-        }
-        public async Task<Item> GetItemAsync(string name)
+        public async Task<Item> GetItem(string name)
         {
             var item = await _context.Items.FirstOrDefaultAsync(i => i.Name == name);
             return _mapper.Map<Item>(item);
         }
-        public async Task<Item> GetItemAsync(int id)
+        public async Task<Item> GetItem(int id)
         {
             var item = await _context.Items.FindAsync(id);
             return _mapper.Map<Item>(item);
         }
-        public async Task UpdateItemAsync(Item item)
+        public async Task UpdateItem(int id, ItemDTO itemDTO)
         {
+            var item = _mapper.Map<Item>(itemDTO);
+            item.Id = id;
             ValidateItemNumbers(item);
-            await ValidateItemCategoryAsync(item);
+            await ValidateItemCategory(item);
             var itemDAO = await _context.Items.FindAsync(item.Id);
             if (itemDAO == null)
             {
                 //TODO: custom exception
-                throw new KeyNotFoundException();
+                throw new KeyNotFoundException("Item " + id + " not found.");
             }
             _mapper.Map(item, itemDAO);
             await _context.SaveChangesAsync();
         }
-        public async Task DeleteItemAsync(int id)
+        public async Task DeleteItem(int id)
         {
             var item = await _context.Items
                             .Where(i => i.Id == id)
@@ -202,13 +207,13 @@ namespace CatalogService.Core.BLL
             }
         }
 
-        private async Task ValidateItemAsync(Item item)
+        private async Task ValidateItem(Item item)
         {
-            await ValidateItemNameAsync(item.Name);
+            await ValidateItemName(item.Name);
             ValidateItemNumbers(item);
-            await ValidateItemCategoryAsync(item);
+            await ValidateItemCategory(item);
         }
-        private async Task ValidateItemNameAsync(string name)
+        private async Task ValidateItemName(string name)
         {
             if(name?.Length > 50)
             {
@@ -216,14 +221,14 @@ namespace CatalogService.Core.BLL
                 throw new ArgumentException("Name", "Max length is 50");
             }
 
-            var existingItem = await GetItemAsync(name);
+            var existingItem = await GetItem(name);
             if (existingItem != null)
             {
                 //TODO: create custom exception.
                 throw new ArgumentException("Name", "Name already exists");
             }
         }
-        private async Task ValidateItemCategoryAsync(Item item)
+        private async Task ValidateItemCategory(Item item)
         {
             if (item.Category == null)
             {
@@ -253,6 +258,30 @@ namespace CatalogService.Core.BLL
             {
                 throw new ArgumentException("Amount", "Amount must be positive");
             }
+        }
+        private Expression<Func<DAL.Item,bool>> GetItemFilter(ItemQuery itemQuery)
+        {
+            var filterConstant = Expression.Constant(true);
+            Expression<Func<DAL.Item, bool>> filter = i => i.CategoryId == itemQuery.CategoryId;
+            if (itemQuery.PriceMax.HasValue)
+            {
+                Expression<Func<DAL.Item, bool>> priceMaxFilter = i => i.Price <= itemQuery.PriceMax;
+                var invokedExpr = Expression.Invoke(priceMaxFilter,filter.Parameters.Cast<Expression>());
+
+                filter = Expression.Lambda<Func<DAL.Item, bool>>(
+                            Expression.AndAlso(filter.Body, invokedExpr), filter.Parameters);
+            }
+            if (itemQuery.PriceMin.HasValue)
+            {
+                Expression<Func<DAL.Item, bool>> priceMinFilter = i => i.Price >= itemQuery.PriceMin;
+                var invokedExpr = Expression.Invoke(priceMinFilter, filter.Parameters.Cast<Expression>());
+
+                filter = Expression.Lambda<Func<DAL.Item, bool>>(
+                            Expression.AndAlso(filter.Body, invokedExpr), filter.Parameters);
+            }
+
+            return filter;
+
         }
         #endregion
     }
