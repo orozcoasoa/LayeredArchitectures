@@ -1,4 +1,4 @@
-﻿namespace CatalogService.Core.BLL
+﻿namespace CatalogService.BLL.Entities
 {
     public class Category
     {

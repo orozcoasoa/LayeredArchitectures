@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CatalogService.Core.DAL
+namespace CatalogService.DAL
 {
     public class CatalogServiceDbContext : DbContext
     {
         public CatalogServiceDbContext(DbContextOptions<CatalogServiceDbContext> options) : base(options)
         {
-
+            base.Database.EnsureCreated();
         }
 
         public DbSet<Category> Categories { get; set; }

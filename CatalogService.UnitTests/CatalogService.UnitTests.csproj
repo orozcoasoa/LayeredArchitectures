@@ -24,8 +24,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CatalogService.Core.BLL\CatalogService.Core.BLL.csproj" />
-    <ProjectReference Include="..\CatalogService.Core.DAL\CatalogService.Core.DAL.csproj" />
+    <ProjectReference Include="..\CatalogService.BLL\CatalogService.BLL.csproj" />
+    <ProjectReference Include="..\CatalogService.DAL\CatalogService.DAL.csproj" />
   </ItemGroup>
 
 </Project>

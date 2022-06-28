@@ -9,11 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CartingService.Core", "Cart
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CartingService.UnitTests", "CartingService.UnitTests\CartingService.UnitTests.csproj", "{36AC4870-3154-4B7E-9027-A12DA96FBC1B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogService.Core.DAL", "CatalogService.Core.DAL\CatalogService.Core.DAL.csproj", "{77DCBED7-D736-4B4D-A3D5-FE6179C6E899}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogService.DAL", "CatalogService.DAL\CatalogService.DAL.csproj", "{77DCBED7-D736-4B4D-A3D5-FE6179C6E899}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogService.Core.BLL", "CatalogService.Core.BLL\CatalogService.Core.BLL.csproj", "{62634D47-8DE3-4D1E-A136-0F289ED1F6A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogService.BLL", "CatalogService.BLL\CatalogService.BLL.csproj", "{62634D47-8DE3-4D1E-A136-0F289ED1F6A4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogService.UnitTests", "CatalogService.UnitTests\CatalogService.UnitTests.csproj", "{52F536F6-B59D-4FE4-B497-0175A9DD93DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogService.UnitTests", "CatalogService.UnitTests\CatalogService.UnitTests.csproj", "{52F536F6-B59D-4FE4-B497-0175A9DD93DA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogService.WebAPI", "CatalogService.WebAPI\CatalogService.WebAPI.csproj", "{8424B71C-5C49-44E9-AD5C-9DC4233B9F5C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{52F536F6-B59D-4FE4-B497-0175A9DD93DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52F536F6-B59D-4FE4-B497-0175A9DD93DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52F536F6-B59D-4FE4-B497-0175A9DD93DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8424B71C-5C49-44E9-AD5C-9DC4233B9F5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8424B71C-5C49-44E9-AD5C-9DC4233B9F5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8424B71C-5C49-44E9-AD5C-9DC4233B9F5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8424B71C-5C49-44E9-AD5C-9DC4233B9F5C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
-using CatalogService.Core.BLL;
-using CatalogService.Core.DAL;
+using CatalogService.BLL;
+using CatalogService.BLL.Entities;
+using CatalogService.DAL;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace CatalogService.UnitTests
         public CatalogEFServiceItemTest()
         {
             var contextOptions = new DbContextOptionsBuilder<CatalogServiceDbContext>()
-                                .UseInMemoryDatabase("CatalogServiceTest")
+                                .UseInMemoryDatabase("CatalogServiceItemTest")
                                 .Options;
             _context = new CatalogServiceDbContext(contextOptions);
 
@@ -26,7 +27,7 @@ namespace CatalogService.UnitTests
             _context.Database.EnsureCreated();
 
             _context.AddRange(
-                    new Core.DAL.Category()
+                    new DAL.Category()
                     {
                         Id = 1,
                         Name = "Cleaning",
@@ -34,7 +35,7 @@ namespace CatalogService.UnitTests
                     }
                );
             _context.AddRange(
-                new Core.DAL.Item()
+                new DAL.Item()
                 {
                     Id = 1,
                     Name = "Broom1",
@@ -44,7 +45,7 @@ namespace CatalogService.UnitTests
                     Price = 10,
                     Amount =1
                 },
-                new Core.DAL.Item()
+                new DAL.Item()
                 {
                     Id = 2,
                     Name = "Mop1",
@@ -60,7 +61,7 @@ namespace CatalogService.UnitTests
 
             if (_mapper == null)
             {
-                var mappingConfig = new MapperConfiguration(mc => mc.AddProfile(new CatalogProfile()));
+                var mappingConfig = new MapperConfiguration(mc => mc.AddProfile(new BLL.Setup.CatalogProfile()));
                 IMapper mapper = mappingConfig.CreateMapper();
                 _mapper = mapper;
             }
@@ -70,35 +71,67 @@ namespace CatalogService.UnitTests
         public async Task GetAllItems()
         {
             var service = new CatalogEFService(_context, _mapper);
-            var items = await service.GetAllItemsAsync();
+            var items = await service.GetAllItems();
             Assert.Equal(2, items.Count);
         }
         [Fact]
         public async Task GetItemsByCategory()
         {
             var service = new CatalogEFService(_context, _mapper);
-            var items = await service.GetItemsAsync(1);
-            Assert.Equal(2, items.Count);
+            var qry = new ItemQuery() { CategoryId = 1, Page = 1, Limit = 20 };
+            var items = await service.GetItems(qry);
+            Assert.Equal(2, items.Count());
         }
         [Fact]
         public async Task GetItemsByCategory_InvalidId()
         {
             var service = new CatalogEFService(_context, _mapper);
-            var items = await service.GetItemsAsync(5);
+            var qry = new ItemQuery() { CategoryId = 5, Page = 1, Limit = 1 };
+            var items = await service.GetItems(qry);
             Assert.Empty(items);
+        }
+        [Fact]
+        public async Task GetItemsByCategory_WithPagination()
+        {
+            var service = new CatalogEFService(_context, _mapper);
+            var qry = new ItemQuery() { CategoryId = 1, Page = 1, Limit = 1 };
+            var items = await service.GetItems(qry);
+            Assert.Single(items);
+            Assert.Equal(2, items.ItemCount);
+            qry = new ItemQuery() { CategoryId = 1, Page = 2, Limit = 1 };
+            items = await service.GetItems(qry);
+            Assert.Single(items);
+            Assert.Equal(2, items.ItemCount);
         }
         [Fact]
         public async Task GetItemsByPriceRange()
         {
             var service = new CatalogEFService(_context, _mapper);
-            var items = await service.GetItemsAsync(10,15);
+            var qry = new ItemQuery() { CategoryId = 1, Page = 1, Limit = 20, PriceMax = 15, PriceMin=5 };
+            var items = await service.GetItems(qry);
+            Assert.Single(items);
+        }
+        [Fact]
+        public async Task GetItemsByPriceRange_MaxPrice()
+        {
+            var service = new CatalogEFService(_context, _mapper);
+            var qry = new ItemQuery() { CategoryId = 1, Page = 1, Limit = 20, PriceMax = 35 };
+            var items = await service.GetItems(qry);
+            Assert.Equal(2,items.Count());
+        }
+        [Fact]
+        public async Task GetItemsByPriceRange_MinPrice()
+        {
+            var service = new CatalogEFService(_context, _mapper);
+            var qry = new ItemQuery() { CategoryId = 1, Page = 1, Limit = 20, PriceMin = 15 };
+            var items = await service.GetItems(qry);
             Assert.Single(items);
         }
         [Fact]
         public async Task GetItem()
         {
             var service = new CatalogEFService(_context, _mapper);
-            var item = await service.GetItemAsync(1);
+            var item = await service.GetItem(1);
             Assert.NotNull(item);
             Assert.Equal(1, item.Id);
             Assert.True(item.Name.Length > 0);
@@ -109,14 +142,14 @@ namespace CatalogService.UnitTests
         public async Task GetItem_InvalidId()
         {
             var service = new CatalogEFService(_context, _mapper);
-            var item = await service.GetItemAsync(10);
+            var item = await service.GetItem(10);
             Assert.Null(item);
         }
         [Fact]
         public async Task GetItemByName()
         {
             var service = new CatalogEFService(_context, _mapper);
-            var item = await service.GetItemAsync("Broom1");
+            var item = await service.GetItem("Broom1");
             Assert.NotNull(item);
             Assert.Equal(1, item.Id);
             Assert.True(item.Name.Length > 0);
@@ -127,14 +160,14 @@ namespace CatalogService.UnitTests
         public async Task GetItemByName_Invalid()
         {
             var service = new CatalogEFService(_context, _mapper);
-            var item = await service.GetItemAsync("Broo");
+            var item = await service.GetItem("Broo");
             Assert.Null(item);
         }
         [Fact]
         public async Task DeleteItem()
         {
             var service = new CatalogEFService(_context, _mapper);
-            await service.DeleteItemAsync(1);
+            await service.DeleteItem(1);
             var numItems = await _context.Items.CountAsync();
             Assert.Equal(1, numItems);
         }
@@ -142,7 +175,7 @@ namespace CatalogService.UnitTests
         public async Task DeleteItem_InexistentId()
         {
             var service = new CatalogEFService(_context, _mapper);
-            await service.DeleteItemAsync(10);
+            await service.DeleteItem(10);
             var numItems = await _context.Items.CountAsync();
             Assert.Equal(2, numItems);
         }
@@ -150,19 +183,17 @@ namespace CatalogService.UnitTests
         public async Task AddItem()
         {
             var service = new CatalogEFService(_context, _mapper);
-            var newItem = new Core.BLL.Item()
+            var newItem = new ItemDTO()
             {
-                Id = 5,
                 Name = "Rag1",
                 Description = "Awesome rag.",
                 Image = "",
-                Category = new Core.BLL.Category() { Id = 1},
+                CategoryId = 1,
                 Price = 5,
                 Amount = 1
             };
-            var addedItem = await service.AddItemAsync(newItem);
+            var addedItem = await service.AddItem(newItem);
             Assert.NotNull(addedItem);
-            Assert.NotEqual(newItem.Id, addedItem.Id);
             Assert.True(addedItem.Id > 0);
             Assert.Equal(newItem.Name, addedItem.Name);
             Assert.NotNull(addedItem.Category);
@@ -174,80 +205,75 @@ namespace CatalogService.UnitTests
         public async Task AddItem_InvalidName()
         {
             var service = new CatalogEFService(_context, _mapper);
-            var newItem = new Core.BLL.Item()
+            var newItem = new ItemDTO()
             {
-                Id = 5,
                 Name = "Broom1",
                 Description = "Awesome rag",
                 Image = "",
-                Category = new Core.BLL.Category() { Id = 1 },
+                CategoryId = 1,
                 Price = 5,
                 Amount = 1
             };
-            await Assert.ThrowsAsync<ArgumentException>(() => service.AddItemAsync(newItem));
+            await Assert.ThrowsAsync<ArgumentException>(() => service.AddItem(newItem));
         }
         [Fact]
         public async Task AddItem_InvalidPrice()
         {
             var service = new CatalogEFService(_context, _mapper);
-            var newItem = new Core.BLL.Item()
+            var newItem = new ItemDTO()
             {
-                Id = 5,
                 Name = "Rag1",
                 Description = "Awesome rag",
                 Image = "",
-                Category = new Core.BLL.Category() { Id = 1 },
+                CategoryId = 1,
                 Price = -5,
                 Amount = 1
             };
-            await Assert.ThrowsAsync<ArgumentException>(() => service.AddItemAsync(newItem));
+            await Assert.ThrowsAsync<ArgumentException>(() => service.AddItem(newItem));
         }
         [Fact]
         public async Task AddItem_InvalidAmount()
         {
             var service = new CatalogEFService(_context, _mapper);
-            var newItem = new Core.BLL.Item()
+            var newItem = new ItemDTO()
             {
-                Id = 5,
                 Name = "Rag1",
                 Description = "Awesome rag",
                 Image = "",
-                Category = new Core.BLL.Category() { Id = 1 },
+                CategoryId = 1,
                 Price = 5,
                 Amount = -1
             };
-            await Assert.ThrowsAsync<ArgumentException>(() => service.AddItemAsync(newItem));
+            await Assert.ThrowsAsync<ArgumentException>(() => service.AddItem(newItem));
         }
         [Fact]
         public async Task AddItem_InvalidCategory()
         {
             var service = new CatalogEFService(_context, _mapper);
-            var newItem = new Core.BLL.Item()
+            var newItem = new ItemDTO()
             {
-                Id = 5,
                 Name = "Rag1",
                 Description = "Awesome rag",
                 Image = "",
                 Price = 5,
                 Amount = 1
             };
-            await Assert.ThrowsAsync<ArgumentException>(() => service.AddItemAsync(newItem));
+            await Assert.ThrowsAsync<ArgumentException>(() => service.AddItem(newItem));
         }
         [Fact]
         public async Task UpdateItem()
         {
             var service = new CatalogEFService(_context, _mapper);
-            var item = new Core.BLL.Item()
+            var item = new ItemDTO()
             {
-                Id = 1,
                 Name = "Rag1",
                 Description = "Awesome rag.",
                 Image = "",
-                Category = new Core.BLL.Category() { Id = 1 },
+                CategoryId = 1,
                 Price = 5,
                 Amount = 1
             };
-            await service.UpdateItemAsync(item);
+            await service.UpdateItem(1, item);
             var updatedItem = await _context.Items.FindAsync(1);
             Assert.NotNull(updatedItem);
             Assert.Equal(item.Name, updatedItem.Name);
@@ -256,64 +282,60 @@ namespace CatalogService.UnitTests
         public async Task UpdateItem_InvalidId()
         {
             var service = new CatalogEFService(_context, _mapper);
-            var item = new Core.BLL.Item()
+            var item = new ItemDTO()
             {
-                Id = 5,
                 Name = "Rag1",
                 Description = "Awesome rag.",
                 Image = "",
-                Category = new Core.BLL.Category() { Id = 1 },
+                CategoryId = 1,
                 Price = 5,
                 Amount = 1
             };
-            await Assert.ThrowsAsync<KeyNotFoundException>(() => service.UpdateItemAsync(item));
+            await Assert.ThrowsAsync<KeyNotFoundException>(() => service.UpdateItem(5, item));
         }
         [Fact]
         public async Task UpdateItem_InvalidPrice()
         {
             var service = new CatalogEFService(_context, _mapper);
-            var item = new Core.BLL.Item()
+            var item = new ItemDTO()
             {
-                Id = 1,
                 Name = "Rag1",
                 Description = "Awesome rag",
                 Image = "",
-                Category = new Core.BLL.Category() { Id = 1 },
+                CategoryId = 1,
                 Price = -5,
                 Amount = 1
             };
-            await Assert.ThrowsAsync<ArgumentException>(() => service.UpdateItemAsync(item));
+            await Assert.ThrowsAsync<ArgumentException>(() => service.UpdateItem(1,item));
         }
         [Fact]
         public async Task UpdateItem_InvalidAmount()
         {
             var service = new CatalogEFService(_context, _mapper);
-            var item = new Core.BLL.Item()
+            var item = new ItemDTO()
             {
-                Id = 1,
                 Name = "Rag1",
                 Description = "Awesome rag",
                 Image = "",
-                Category = new Core.BLL.Category() { Id = 1 },
+                CategoryId = 1,
                 Price = 5,
                 Amount = -1
             };
-            await Assert.ThrowsAsync<ArgumentException>(() => service.UpdateItemAsync(item));
+            await Assert.ThrowsAsync<ArgumentException>(() => service.UpdateItem(1,item));
         }
         [Fact]
         public async Task UpdateItem_InvalidCategory()
         {
             var service = new CatalogEFService(_context, _mapper);
-            var item = new Core.BLL.Item()
+            var item = new ItemDTO()
             {
-                Id = 1,
                 Name = "Rag1",
                 Description = "Awesome rag",
                 Image = "",
                 Price = 5,
                 Amount = 1
             };
-            await Assert.ThrowsAsync<ArgumentException>(() => service.UpdateItemAsync(item));
+            await Assert.ThrowsAsync<ArgumentException>(() => service.UpdateItem(1,item));
         }
     }
 }
