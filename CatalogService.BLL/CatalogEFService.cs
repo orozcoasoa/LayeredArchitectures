@@ -48,7 +48,13 @@ namespace CatalogService.BLL
                             .FirstOrDefaultAsync();
             if (category != null)
             {
+                var items = await _context.Items
+                        .Where(i => i.CategoryId == id)
+                        .ToListAsync();
+                if (items.Any())
+                    _context.Remove(items);
                 _context.Remove(category);
+
                 await _context.SaveChangesAsync();
             }
         }
@@ -90,7 +96,7 @@ namespace CatalogService.BLL
             if (categoryDAO == null)
             {
                 //TODO: custom exception
-                throw new KeyNotFoundException();
+                throw new KeyNotFoundException("Category " + id + " not found.");
             }
             _mapper.Map(category, categoryDAO);
             if (category.ParentCategory == null)
@@ -184,7 +190,7 @@ namespace CatalogService.BLL
             if (itemDAO == null)
             {
                 //TODO: custom exception
-                throw new KeyNotFoundException();
+                throw new KeyNotFoundException("Item " + id + " not found.");
             }
             _mapper.Map(item, itemDAO);
             await _context.SaveChangesAsync();
@@ -276,14 +282,6 @@ namespace CatalogService.BLL
 
             return filter;
 
-        }
-        private bool FilterQuery(DAL.Item i, ItemQuery itemQuery)
-        {
-            var upperPriceLimit = !itemQuery.PriceMax.HasValue || i.Price <= itemQuery.PriceMax;
-            var lowerPriceLimit = !itemQuery.PriceMin.HasValue || i.Price >= itemQuery.PriceMin;
-            var categoryCheck = i.CategoryId == itemQuery.CategoryId;
-
-            return upperPriceLimit && lowerPriceLimit && categoryCheck;
         }
         #endregion
     }

@@ -48,10 +48,6 @@ namespace CatalogService.WebAPI.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> DeleteCategory([FromRoute] int id)
         {
-            var itemQry = new ItemQuery() { CategoryId = id, Page=1, Limit=int.MaxValue };
-            var items = await _service.GetItems(itemQry);
-            foreach(var item in items)
-                await _service.DeleteItem(item.Id);
             await _service.DeleteCategory(id);
             return NoContent();
         }
