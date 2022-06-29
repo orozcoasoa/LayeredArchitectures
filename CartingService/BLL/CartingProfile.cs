@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using CartingService.Core.DAL;
+using CartingService.DAL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CartingService.Core.BLL
+namespace CartingService.BLL
 {
     public class CartingProfile : Profile
     {

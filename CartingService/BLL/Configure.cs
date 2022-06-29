@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CartingService.Core.BLL
+namespace CartingService.BLL
 {
     public static class Configure
     {

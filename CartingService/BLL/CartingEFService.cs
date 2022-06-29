@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CartingService.Core.DAL;
+using CartingService.DAL;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CartingService.Core.BLL
+namespace CartingService.BLL
 {
     public class CartingEFService : ICartingService
     {
@@ -20,12 +20,12 @@ namespace CartingService.Core.BLL
             _mapper = mapper;
         }
 
-        public async Task AddItemAsync(Guid cartId, Item item)
+        public async Task AddItem(Guid cartId, Item item)
         {
             var cartDAO = await _context.Carts.Include(c => c.Items).FirstOrDefaultAsync(c => c.Id == cartId);
             if (cartDAO == null)
             {
-                var cart = await InitializeCartAsync(cartId, item);
+                var cart = await InitializeCart(cartId, item);
                 cartDAO = _mapper.Map<CartDAO>(cart);
             }
             else
@@ -47,7 +47,7 @@ namespace CartingService.Core.BLL
                 entry.OriginalValues.SetValues(entry.CurrentValues);
             }
         }
-        public async Task<IList<Item>> GetCartItemsAsync(Guid cartId)
+        public async Task<IList<Item>> GetCartItems(Guid cartId)
         {
             var cartDAO = await _context.Carts.Include(c => c.Items).FirstOrDefaultAsync(c => c.Id == cartId);
             if (cartDAO == null)
@@ -56,7 +56,7 @@ namespace CartingService.Core.BLL
                 return _mapper.Map<List<ItemDAO>, List<Item>>(cartDAO.Items);
 
         }
-        public async Task<Cart> InitializeCartAsync(Guid cartId, Item? item)
+        public async Task<Cart> InitializeCart(Guid cartId, Item? item)
         {
             var cartDAO = await _context.Carts.Include(c => c.Items).FirstOrDefaultAsync(c => c.Id == cartId);
             if (cartDAO == null)
@@ -82,7 +82,7 @@ namespace CartingService.Core.BLL
             }
             return _mapper.Map<Cart>(cartDAO);
         }
-        public async Task RemoveItemAsync(Guid cartId, int itemId)
+        public async Task RemoveItem(Guid cartId, int itemId)
         {
             var cartDAO = await _context.Carts.Include(c => c.Items).FirstOrDefaultAsync(c => c.Id == cartId);
             if (cartDAO == null)

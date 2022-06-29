@@ -49,7 +49,7 @@ namespace CartingService.UnitTests
         public async Task GetExistingCart()
         {
             var repo = new NoSQLCartingRepository(_db);
-            var cart = await repo.GetCartAsync(_existingCartId);
+            var cart = await repo.GetCart(_existingCartId);
             Assert.Equal(_existingCartId, cart.Id);
             Assert.Equal(2, cart.Items.Count);
         }
@@ -58,14 +58,14 @@ namespace CartingService.UnitTests
         {
             var repo = new NoSQLCartingRepository(_db);
             var newGuid = Guid.NewGuid();
-            var cart = await repo.GetCartAsync(newGuid);
+            var cart = await repo.GetCart(newGuid);
             Assert.Null(cart);
         }
         [Fact]
         public async Task CreateCart_ExistingCart()
         {
             var repo = new NoSQLCartingRepository(_db);
-            var cart = await repo.CreateCartAsync(_existingCartId);
+            var cart = await repo.CreateCart(_existingCartId);
             Assert.Equal(_existingCartId, cart.Id);
             Assert.Equal(2, cart.Items.Count);
         }
@@ -74,7 +74,7 @@ namespace CartingService.UnitTests
         {
             var repo = new NoSQLCartingRepository(_db);
             var newGuid = Guid.NewGuid();
-            var cart = await repo.CreateCartAsync(newGuid);
+            var cart = await repo.CreateCart(newGuid);
             Assert.Equal(newGuid, cart.Id);
             Assert.Empty(cart.Items);
         }
@@ -83,9 +83,9 @@ namespace CartingService.UnitTests
         {
             var repo = new NoSQLCartingRepository(_db);
             var item = new ItemDAO() { Id = 3, Name = "Item3", Quantity = 3, Price = 30, Image = null };
-            await repo.AddItemToCartAsync(_existingCartId, item);
+            await repo.AddItemToCart(_existingCartId, item);
 
-            var cart = await repo.GetCartAsync(_existingCartId);
+            var cart = await repo.GetCart(_existingCartId);
             Assert.Equal(_existingCartId, cart.Id);
             Assert.Equal(3, cart.Items.Count);
         }
@@ -95,9 +95,9 @@ namespace CartingService.UnitTests
             var repo = new NoSQLCartingRepository(_db);
             var item = new ItemDAO() { Id = 3, Name = "Item3", Quantity = 3, Price = 30, Image = null };
             var newGuid = Guid.NewGuid();
-            await repo.AddItemToCartAsync(newGuid, item);
+            await repo.AddItemToCart(newGuid, item);
 
-            var cart = await repo.GetCartAsync(newGuid);
+            var cart = await repo.GetCart(newGuid);
             Assert.Null(cart);
         }
         [Fact]
@@ -105,9 +105,9 @@ namespace CartingService.UnitTests
         {
             var repo = new NoSQLCartingRepository(_db);
             var item = new ItemDAO { Name = "Item2", Id = 2, Price = 20, Quantity = 2, Image = null };
-            await repo.AddItemToCartAsync(_existingCartId, item);
+            await repo.AddItemToCart(_existingCartId, item);
 
-            var cart = await repo.GetCartAsync(_existingCartId);
+            var cart = await repo.GetCart(_existingCartId);
             Assert.Equal(_existingCartId, cart.Id);
             Assert.Equal(2, cart.Items.Count);
         }
@@ -115,9 +115,9 @@ namespace CartingService.UnitTests
         public async Task RemoveItemFromCart()
         {
             var repo = new NoSQLCartingRepository(_db);
-            await repo.RemoveItemFromCartAsync(_existingCartId, 2);
+            await repo.RemoveItemFromCart(_existingCartId, 2);
 
-            var cart = await repo.GetCartAsync(_existingCartId);
+            var cart = await repo.GetCart(_existingCartId);
             Assert.Equal(_existingCartId, cart.Id);
             Assert.Single(cart.Items);
         }
@@ -125,9 +125,9 @@ namespace CartingService.UnitTests
         public async Task RemoveItemFromCart_NonExistantItem()
         {
             var repo = new NoSQLCartingRepository(_db);
-            await repo.RemoveItemFromCartAsync(_existingCartId, 3);
+            await repo.RemoveItemFromCart(_existingCartId, 3);
 
-            var cart = await repo.GetCartAsync(_existingCartId);
+            var cart = await repo.GetCart(_existingCartId);
             Assert.Equal(_existingCartId, cart.Id);
             Assert.Equal(2, cart.Items.Count);
         }
@@ -136,9 +136,9 @@ namespace CartingService.UnitTests
         {
             var repo = new NoSQLCartingRepository(_db);
             var newGuid = Guid.NewGuid();
-            await repo.RemoveItemFromCartAsync(newGuid, 3);
+            await repo.RemoveItemFromCart(newGuid, 3);
 
-            var cart = await repo.GetCartAsync(_existingCartId);
+            var cart = await repo.GetCart(_existingCartId);
             Assert.Equal(_existingCartId, cart.Id);
             Assert.Equal(2, cart.Items.Count);
         }
@@ -146,9 +146,9 @@ namespace CartingService.UnitTests
         public async Task UpdateItemQuantity()
         {
             var repo = new NoSQLCartingRepository(_db);
-            await repo.UpdateItemQuantityAsync(_existingCartId, 1, 3);
+            await repo.UpdateItemQuantity(_existingCartId, 1, 3);
 
-            var cart = await repo.GetCartAsync(_existingCartId);
+            var cart = await repo.GetCart(_existingCartId);
             Assert.Equal(_existingCartId, cart.Id);
             Assert.Equal(2, cart.Items.Count);
             Assert.Equal(4, cart.Items.First(i => i.Id == 1).Quantity);
@@ -157,9 +157,9 @@ namespace CartingService.UnitTests
         public async Task UpdateItemQuantity_NonExistantItem()
         {
             var repo = new NoSQLCartingRepository(_db);
-            await repo.UpdateItemQuantityAsync(_existingCartId, 3, 3);
+            await repo.UpdateItemQuantity(_existingCartId, 3, 3);
 
-            var cart = await repo.GetCartAsync(_existingCartId);
+            var cart = await repo.GetCart(_existingCartId);
             Assert.Equal(_existingCartId, cart.Id);
             Assert.Equal(2, cart.Items.Count);
             Assert.Equal(1, cart.Items.First(i => i.Id == 1).Quantity);
@@ -169,9 +169,9 @@ namespace CartingService.UnitTests
         {
             var repo = new NoSQLCartingRepository(_db);
             var newGuid = Guid.NewGuid();
-            await repo.UpdateItemQuantityAsync(newGuid, 1, 3);
+            await repo.UpdateItemQuantity(newGuid, 1, 3);
 
-            var cart = await repo.GetCartAsync(_existingCartId);
+            var cart = await repo.GetCart(_existingCartId);
             Assert.Equal(_existingCartId, cart.Id);
             Assert.Equal(2, cart.Items.Count);
             Assert.Equal(1, cart.Items.First(i => i.Id == 1).Quantity);

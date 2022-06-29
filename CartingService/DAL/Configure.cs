@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CartingService.Core.DAL
+namespace CartingService.DAL
 {
     public static class Configure
     {

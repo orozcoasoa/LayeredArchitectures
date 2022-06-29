@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CartingService.Core.BLL
+namespace CartingService.BLL
 {
     public class Cart
     {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CartingService.Core.DAL
+namespace CartingService.DAL
 {
     public class NoSQLCartingRepository : ICartingRepository
     {
@@ -18,9 +18,9 @@ namespace CartingService.Core.DAL
             _db = db;
         }
 
-        public async Task AddItemToCartAsync(Guid id, ItemDAO item)
+        public async Task AddItemToCart(Guid id, ItemDAO item)
         {
-            var cart = await GetCartAsync(id);
+            var cart = await GetCart(id);
             if (cart == null || cart.Items.Exists(i => i.Id == item.Id))
                 return;
 
@@ -31,9 +31,9 @@ namespace CartingService.Core.DAL
             item.Cart = cart;
             await Task.Run(() => itemsCol.Insert(item));
         }
-        public async Task<CartDAO> CreateCartAsync(Guid id)
+        public async Task<CartDAO> CreateCart(Guid id)
         {
-            var cart = await GetCartAsync(id);
+            var cart = await GetCart(id);
             if (cart != null)
                 return cart;
 
@@ -42,7 +42,7 @@ namespace CartingService.Core.DAL
             col.Insert(newCart);
             return newCart;
         }
-        public async Task<CartDAO> GetCartAsync(Guid id)
+        public async Task<CartDAO> GetCart(Guid id)
         {
             var col = _db.GetCollection<CartDAO>(carts);
             var result = await Task.Run(() => col.Query()
@@ -51,9 +51,9 @@ namespace CartingService.Core.DAL
                                             .SingleOrDefault());
             return result;
         }
-        public async Task RemoveItemFromCartAsync(Guid id, int itemId)
+        public async Task RemoveItemFromCart(Guid id, int itemId)
         {
-            var cart = await GetCartAsync(id);
+            var cart = await GetCart(id);
             if (cart == null || !cart.Items.Exists(i => i.Id == itemId))
                 return;
 
@@ -61,9 +61,9 @@ namespace CartingService.Core.DAL
             var col = _db.GetCollection<CartDAO>(carts);
             await Task.Run(() => col.Update(cart));
         }
-        public async Task UpdateItemQuantityAsync(Guid id, int itemId, double quantity)
+        public async Task UpdateItemQuantity(Guid id, int itemId, double quantity)
         {
-            var cart = await GetCartAsync(id);
+            var cart = await GetCart(id);
             if (cart == null)
                 return;
 
