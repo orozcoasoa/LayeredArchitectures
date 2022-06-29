@@ -39,8 +39,8 @@ namespace CartingService.UnitTests
                 }));
 
             var cartingService = new CartingRepoService(repoMock.Object, _mapper);
-            var items = await cartingService.GetCartItems(guid);
-            Assert.Equal(2, items.Count);
+            var cart = await cartingService.GetCart(guid);
+            Assert.Equal(2, cart.Items.Count);
         }
         [Fact]
         public void InitializeCart_NewId()

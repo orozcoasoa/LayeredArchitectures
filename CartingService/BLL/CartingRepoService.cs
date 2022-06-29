@@ -37,13 +37,25 @@ namespace CartingService.BLL
 
             }
         }
-        public async Task<IList<Item>> GetCartItems(Guid cartId)
+        public async Task<bool> ExistsCart(Guid cartId)
+        {
+            var cart = await _repository.GetCart(cartId);
+            return cart != null;
+        }
+        public async Task<bool> ExistsItemOnCart(Guid cartId, int itemId)
+        {
+            var cart = await _repository.GetCart(cartId);
+            if (cart == null)
+                return false;
+            return cart.Items.Exists(i => i.Id == itemId);
+        }
+        public async Task<Cart> GetCart(Guid cartId)
         {
             var cartDAO = await _repository.GetCart(cartId);
             if (cartDAO == null)
-                return new List<Item>();
+                return null;
             else
-                return _mapper.Map<List<ItemDAO>,List<Item>>(cartDAO.Items);
+                return _mapper.Map<Cart>(cartDAO);
 
         }
         public async Task<Cart> InitializeCart(Guid cartId, Item? item)
