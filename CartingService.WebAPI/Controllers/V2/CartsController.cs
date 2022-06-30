@@ -1,17 +1,17 @@
 ﻿using CartingService.BLL;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CartingService.WebAPI.Controllers.V1
+namespace CartingService.WebAPI.Controllers.V2
 {
     /// <summary>
     /// Controller for cart.
     /// </summary>
-    [Route("api/v1/[controller]")]
+    [Route("api/v2/[controller]")]
     [ApiController]
     public class CartsController : ControllerBase
     {
         private readonly ICartingService _service;
-        private const string apiVersion = "v1";
+        private const string apiVersion = "v2";
 
         public CartsController(ICartingService service)
         {
@@ -19,7 +19,7 @@ namespace CartingService.WebAPI.Controllers.V1
         }
 
         /// <summary>
-        /// Gets cart with list of items.
+        /// Gets list of items.
         /// </summary>
         /// <param name="cartId">Unique id of cart.</param>
         /// <returns>Cart with list of items.</returns>
@@ -28,18 +28,18 @@ namespace CartingService.WebAPI.Controllers.V1
         /// <response code="500">A server fault occurred</response>
         /// <remarks>
         /// Sample request:
-        /// GET: api/v1/CartsController/5
+        /// GET: api/v2/CartsController/5
         /// </remarks>
-        [HttpGet("{cartId}", Name = nameof(GetCart) + apiVersion)]
+        [HttpGet("{cartId}", Name = nameof(GetCartItems) + apiVersion)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<Cart>> GetCart([FromRoute] Guid cartId)
+        public async Task<ActionResult<List<Item>>> GetCartItems([FromRoute] Guid cartId)
         {
             var cart = await _service.GetCart(cartId);
             if (cart == null)
                 return NotFound();
-            return Ok(cart);
+            return Ok(cart.Items);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace CartingService.WebAPI.Controllers.V1
         /// <response code="500">A server fault occurred</response>
         /// <remarks>
         /// Sample request:
-        /// POST: api/v1/CartsController/5
+        /// POST: api/v2/CartsController/5
         /// </remarks>
         [HttpPost("{cartId}", Name = nameof(AddItemtoCart) + apiVersion)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -81,7 +81,7 @@ namespace CartingService.WebAPI.Controllers.V1
         /// <response code="500">A server fault occurred</response>
         /// <remarks>
         /// Sample request:
-        /// DELETE: api/v1/CartsController/5/1
+        /// DELETE: api/v2/CartsController/5/1
         /// </remarks>
         [HttpDelete("{cartId}/{itemId}", Name = nameof(RemoveItemFromCart) + apiVersion)]
         [ProducesResponseType(StatusCodes.Status200OK)]

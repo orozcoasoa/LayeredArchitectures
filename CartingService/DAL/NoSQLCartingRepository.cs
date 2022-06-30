@@ -29,7 +29,7 @@ namespace CartingService.DAL
             await Task.Run(() => col.Update(cart));
             var itemsCol = _db.GetCollection<ItemDAO>(items);
             item.Cart = cart;
-            await Task.Run(() => itemsCol.Insert(item));
+            await Task.Run(() => itemsCol.Upsert(item));
         }
         public async Task<CartDAO> CreateCart(Guid id)
         {

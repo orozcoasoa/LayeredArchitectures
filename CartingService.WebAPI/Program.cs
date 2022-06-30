@@ -1,27 +1,33 @@
 using CartingService.WebAPI;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options =>
+{
+    options.Conventions.Add(new SwaggerGroupByVersion());
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
+builder.Services.AddSwaggerGen(options =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo()
+    options.SwaggerDoc("v1", new OpenApiInfo()
     {
         Title = "CartingService API",
         Version = "v1",
         Description = "Web API service for cart management."
     });
-    c.SwaggerDoc("v2", new OpenApiInfo()
+    options.SwaggerDoc("v2", new OpenApiInfo()
     {
         Title = "CartingService API",
         Version = "v2",
         Description = "Web API service for cart management."
     });
+    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
 CartingService.DAL.Configure.ConfigureServices(builder.Services, "Sample.db");
 CartingService.BLL.Configure.ConfigureServices(builder.Services);
