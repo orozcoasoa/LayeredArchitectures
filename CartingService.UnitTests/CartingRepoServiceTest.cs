@@ -27,7 +27,7 @@ namespace CartingService.UnitTests
         {
             var repoMock = new Mock<ICartingRepository>();
             var guid = Guid.NewGuid();
-            repoMock.Setup(s => s.GetCartAsync(guid))
+            repoMock.Setup(s => s.GetCart(guid))
                 .Returns(Task.FromResult(new CartDAO()
                 {
                     Id = guid,
@@ -39,8 +39,8 @@ namespace CartingService.UnitTests
                 }));
 
             var cartingService = new CartingRepoService(repoMock.Object, _mapper);
-            var items = await cartingService.GetCartItemsAsync(guid);
-            Assert.Equal(2, items.Count);
+            var cart = await cartingService.GetCart(guid);
+            Assert.Equal(2, cart.Items.Count);
         }
         [Fact]
         public void InitializeCart_NewId()
@@ -58,7 +58,7 @@ namespace CartingService.UnitTests
             var repoMock = new Mock<ICartingRepository>();
             var guid = Guid.NewGuid();
             var itemToAdd = new ItemDAO { Name = "Item1", Id = 1, Price = 10, Quantity = 1, Image = null };
-            repoMock.Setup(s => s.GetCartAsync(guid))
+            repoMock.Setup(s => s.GetCart(guid))
                 .Returns(Task.FromResult(new CartDAO()
                 {
                     Id = guid,
@@ -71,7 +71,7 @@ namespace CartingService.UnitTests
 
 
             var cartingService = new CartingRepoService(repoMock.Object, _mapper);
-            var cart = await cartingService.InitializeCartAsync(guid, null);
+            var cart = await cartingService.InitializeCart(guid, null);
             Assert.Equal(guid, cart.Id);
             Assert.Empty(cart.Items);
         }

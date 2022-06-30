@@ -5,7 +5,7 @@ VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CartingService.WebAPI", "CartingService.WebAPI\CartingService.WebAPI.csproj", "{7D553435-1D18-4BE3-BA8D-27B6364E2581}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CartingService.Core", "CartingService.Core\CartingService.Core.csproj", "{3D84F2C1-B17F-4F7C-B454-78B10206FF52}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CartingService", "CartingService\CartingService.csproj", "{3D84F2C1-B17F-4F7C-B454-78B10206FF52}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CartingService.UnitTests", "CartingService.UnitTests\CartingService.UnitTests.csproj", "{36AC4870-3154-4B7E-9027-A12DA96FBC1B}"
 EndProject
@@ -17,7 +17,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogService.UnitTests", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogService.WebAPI", "CatalogService.WebAPI\CatalogService.WebAPI.csproj", "{8424B71C-5C49-44E9-AD5C-9DC4233B9F5C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogService.WebAPI.Tests", "CatalogService.WebAPI.Tests\CatalogService.WebAPI.Tests.csproj", "{92523A96-3FE6-44B8-8550-3BA0577B4464}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CatalogService.WebAPI.Tests", "CatalogService.WebAPI.Tests\CatalogService.WebAPI.Tests.csproj", "{92523A96-3FE6-44B8-8550-3BA0577B4464}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CartingService.WebAPI.Tests", "CartingService.WebAPI.Tests\CartingService.WebAPI.Tests.csproj", "{EFF0638B-5CA5-42EF-AD52-49EB149FBC2D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{92523A96-3FE6-44B8-8550-3BA0577B4464}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92523A96-3FE6-44B8-8550-3BA0577B4464}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92523A96-3FE6-44B8-8550-3BA0577B4464}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFF0638B-5CA5-42EF-AD52-49EB149FBC2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFF0638B-5CA5-42EF-AD52-49EB149FBC2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFF0638B-5CA5-42EF-AD52-49EB149FBC2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFF0638B-5CA5-42EF-AD52-49EB149FBC2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

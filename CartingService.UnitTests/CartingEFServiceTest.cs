@@ -45,24 +45,24 @@ namespace CartingService.UnitTests
         public async Task GetAllItemsForCart()
         {
             var cartingService = new CartingEFService(_context, _mapper);
-            var items = await cartingService.GetCartItemsAsync(_existingCartId);
-            Assert.Equal(2, items.Count);
+            var cart = await cartingService.GetCart(_existingCartId);
+            Assert.Equal(2, cart.Items.Count);
         }
         [Fact]
         public async Task InitializeCart_NewId()
         {
             var cartingService = new CartingEFService(_context, _mapper);
             var newGuid = Guid.NewGuid();
-            var cart = await cartingService.InitializeCartAsync(newGuid, new Item { Id = 3, Name = "Item3", Price = 30, Quantity = 3 });
+            var cart = await cartingService.InitializeCart(newGuid, new Item { Id = 3, Name = "Item3", Price = 30, Quantity = 3 });
             Assert.Equal(newGuid, cart.Id);
-            var items = await cartingService.GetCartItemsAsync(newGuid);
-            Assert.Single(items);
+            var cartWItems = await cartingService.GetCart(newGuid);
+            Assert.Single(cartWItems.Items);
         }
         [Fact]
         public async Task InitializeCart_ExistingId()
         {
             var cartingService = new CartingEFService(_context, _mapper);
-            var cart = await cartingService.InitializeCartAsync(_existingCartId, new Item { Id = 3, Name = "Item3", Price = 30, Quantity = 3 });
+            var cart = await cartingService.InitializeCart(_existingCartId, new Item { Id = 3, Name = "Item3", Price = 30, Quantity = 3 });
             Assert.Equal(_existingCartId, cart.Id);
             Assert.Single(cart.Items);
         }
@@ -71,7 +71,7 @@ namespace CartingService.UnitTests
         {
             var cartingService = new CartingEFService(_context, _mapper);
             var newGuid = Guid.NewGuid();
-            var cart = await cartingService.InitializeCartAsync(newGuid, null);
+            var cart = await cartingService.InitializeCart(newGuid, null);
             Assert.Equal(newGuid, cart.Id);
             Assert.Empty(cart.Items);
         }
@@ -79,18 +79,18 @@ namespace CartingService.UnitTests
         public async Task AddItemToCart_ExistingCart()
         {
             var cartingService = new CartingEFService(_context, _mapper);
-            await cartingService.AddItemAsync(_existingCartId, new Item { Id = 3, Name = "Item3", Price = 30, Quantity = 3 });
-            var items = await cartingService.GetCartItemsAsync(_existingCartId);
-            Assert.Equal(3, items.Count);
+            await cartingService.AddItem(_existingCartId, new Item { Id = 3, Name = "Item3", Price = 30, Quantity = 3 });
+            var cart = await cartingService.GetCart(_existingCartId);
+            Assert.Equal(3, cart.Items.Count);
         }
         [Fact]
         public async Task AddItemToCart_ExistingItem()
         {
             var cartingService = new CartingEFService(_context, _mapper);
-            await cartingService.AddItemAsync(_existingCartId, new Item { Id = 2, Name = "Item2", Price = 30, Quantity = 3 });
-            var items = await cartingService.GetCartItemsAsync(_existingCartId);
-            Assert.Equal(2, items.Count);
-            var item = items.ToList().Find(i => i.Id == 2);
+            await cartingService.AddItem(_existingCartId, new Item { Id = 2, Name = "Item2", Price = 30, Quantity = 3 });
+            var cart = await cartingService.GetCart(_existingCartId);
+            Assert.Equal(2, cart.Items.Count);
+            var item = cart.Items.Find(i => i.Id == 2);
             Assert.NotNull(item);
             Assert.Equal(5, item.Quantity);
         }
@@ -99,34 +99,34 @@ namespace CartingService.UnitTests
         {
             var cartingService = new CartingEFService(_context, _mapper);
             var newGuid = Guid.NewGuid();
-            await cartingService.AddItemAsync(newGuid, new Item { Id = 3, Name = "Item3", Price = 30, Quantity = 3 });
-            var items = await cartingService.GetCartItemsAsync(newGuid);
-            Assert.Single(items);
+            await cartingService.AddItem(newGuid, new Item { Id = 3, Name = "Item3", Price = 30, Quantity = 3 });
+            var cart = await cartingService.GetCart(newGuid);
+            Assert.Single(cart.Items);
         }
         [Fact]
         public async Task RemoveItem_ExistingItem()
         {
             var cartingService = new CartingEFService(_context, _mapper);
-            await cartingService.RemoveItemAsync(_existingCartId, 1);
-            var items = await cartingService.GetCartItemsAsync(_existingCartId);
-            Assert.Single(items);
+            await cartingService.RemoveItem(_existingCartId, 1);
+            var cart = await cartingService.GetCart(_existingCartId);
+            Assert.Single(cart.Items);
         }
         [Fact]
         public async Task RemoveItem_NonExistingItem()
         {
             var cartingService = new CartingEFService(_context, _mapper);
-            await cartingService.RemoveItemAsync(_existingCartId, 3);
-            var items = await cartingService.GetCartItemsAsync(_existingCartId);
-            Assert.Equal(2,items.Count);
+            await cartingService.RemoveItem(_existingCartId, 3);
+            var cart = await cartingService.GetCart(_existingCartId);
+            Assert.Equal(2,cart.Items.Count);
         }
         [Fact]
         public async Task RemoveItem_NonExistingCart()
         {
             var cartingService = new CartingEFService(_context, _mapper);
             var newGuid = Guid.NewGuid();
-            await cartingService.RemoveItemAsync(newGuid, 1);
-            var items = await cartingService.GetCartItemsAsync(newGuid);
-            Assert.Empty(items);
+            await cartingService.RemoveItem(newGuid, 1);
+            var cart = await cartingService.GetCart(newGuid);
+            Assert.Null(cart);
         }
 
     }

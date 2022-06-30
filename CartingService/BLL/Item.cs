@@ -5,15 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CartingService.Core.DAL
+namespace CartingService.BLL
 {
-    public class ItemDAO
+    public class Item
     {
+        [Required]
         public int Id { get; set; }
+        [Required]
         public string Name { get; set; }
-        public byte[]? Image { get; set; }
+        public string? Image { get; set; }
+        [Required]
         public decimal Price { get; set; }
         public double Quantity { get; set; }
-        public CartDAO Cart { get; set; }
     }
 }

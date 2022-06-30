@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace CartingService.Core.DAL
+namespace CartingService.DAL
 {
     public class CartingDbContext : DbContext
     {
