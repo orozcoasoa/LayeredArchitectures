@@ -4,14 +4,14 @@ using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
 using System.Reflection;
 
-namespace CatalogService.BLL.Setup
+namespace CartingService.BLL.Setup
 {
     public static class Configure
     {
         public static IServiceCollection ConfigureBLL(this IServiceCollection services)
         {
+            services.AddScoped<ICartingService, CartingRepoService>();
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            services.AddScoped<ICatalogService, CatalogEFService>();
             services.AddSingleton(s =>
             {
                 var configuration = s.GetService<IConfiguration>();
@@ -25,7 +25,9 @@ namespace CatalogService.BLL.Setup
                 return conn.CreateConnection();
             });
             services.AddSingleton<IMQClient, RabbitMQClient>();
-            
+
+            services.AddHostedService<MQListener>();
+
             return services;
         }
     }

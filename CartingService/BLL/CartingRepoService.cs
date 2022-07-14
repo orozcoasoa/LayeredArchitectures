@@ -1,11 +1,6 @@
 ﻿using AutoMapper;
 using CartingService.DAL;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CartingService.DAL.Entities;
 
 namespace CartingService.BLL
 {
@@ -25,17 +20,24 @@ namespace CartingService.BLL
             var cartDAO = await _repository.GetCart(cartId);
             if (cartDAO == null)
             {
-                var cart = await InitializeCart(cartId, item);
-            }
-            else
-            {
-                var existingItem = cartDAO.Items.Find(i => i.Id == item.Id);
-                if (existingItem != null)
-                    await _repository.UpdateItemQuantity(cartId, existingItem.Id, existingItem.Quantity + item.Quantity);
+                if (_repository.ExistsItem(item.Id))
+                    await InitializeCart(cartId, item);
                 else
-                    await _repository.AddItemToCart(cartId, _mapper.Map<ItemDAO>(item));
+                    throw new ArgumentException("Item doesn't exists.", nameof(Item));
+            }
+            else if (item != null)
+            {
+                var existingItem = cartDAO.Items.Find(i => i.Item.Id == item.Id);
+                if (existingItem != null)
+                    await _repository.UpdateItemQuantity(cartId, existingItem.Item.Id, existingItem.Quantity + item.Quantity);
+                else if (_repository.ExistsItem(item.Id))
+                    await _repository.AddItemToCart(cartId, _mapper.Map<CartItemDAO>(item));
+                else
+                    throw new ArgumentException("Item doesn't exists.", nameof(Item));
 
             }
+            else
+                throw new ArgumentException("Item can't be null.", nameof(Item));
         }
         public async Task<bool> ExistsCart(Guid cartId)
         {
@@ -47,7 +49,7 @@ namespace CartingService.BLL
             var cart = await _repository.GetCart(cartId);
             if (cart == null)
                 return false;
-            return cart.Items.Exists(i => i.Id == itemId);
+            return cart.Items.Exists(i => i.Item.Id == itemId);
         }
         public async Task<Cart> GetCart(Guid cartId)
         {
@@ -60,25 +62,40 @@ namespace CartingService.BLL
         }
         public async Task<Cart> InitializeCart(Guid cartId, Item? item)
         {
-            var cartDAO = await _repository.GetCart(cartId);
-            if(cartDAO == null)
-            {
+            CartDAO cartDAO;
+            if (await _repository.ExistsCart(cartId))
+                cartDAO = await _repository.GetCart(cartId);
+            else
                 cartDAO = await _repository.CreateCart(cartId);
-            }
+
             if (item != null)
             {
-                var itemDAO = _mapper.Map<Item, ItemDAO>(item);
+                var itemDAO = _mapper.Map<Item, CartItemDAO>(item);
                 await _repository.AddItemToCart(cartId, itemDAO);
                 cartDAO = await _repository.GetCart(cartId);
             }
             else
-                cartDAO.Items = new List<ItemDAO>() { };
+                cartDAO.Items = new List<CartItemDAO>() { };
             
             return _mapper.Map<Cart>(cartDAO);
         }
         public async Task RemoveItem(Guid cartId, int itemId)
         {
             await _repository.RemoveItemFromCart(cartId, itemId);
+        }
+        public async Task<bool> ExistsItem(int itemId)
+        {
+            return await Task.Run(() => _repository.ExistsItem(itemId));
+        }
+        public void ItemUpdated(MessagingService.Contracts.Item item)
+        {
+            var itemDAO = _mapper.Map<ItemDAO>(item);
+            _repository.ItemUpdated(itemDAO);
+
+        }
+        public void ItemDeleted(int itemId)
+        {
+            _repository.ItemDeleted(itemId);
         }
     }
 }

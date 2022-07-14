@@ -1,14 +1,13 @@
-using AutoMapper;
 using CatalogService.BLL.Setup;
+using CatalogService.DAL;
 using Microsoft.AspNetCore.Diagnostics;
-using System.Reflection;
 using static System.Net.Mime.MediaTypeNames;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-CatalogService.DAL.Configure.ConfigureServices(builder.Services, "Data Source=sample.db");
-Configure.ConfigureServices(builder.Services);
+builder.Services.ConfigureDAL()
+    .ConfigureBLL();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

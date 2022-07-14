@@ -2,7 +2,9 @@ using AutoMapper;
 using CatalogService.BLL;
 using CatalogService.BLL.Entities;
 using CatalogService.DAL;
+using MessagingService;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 
 namespace CatalogService.UnitTests
 {
@@ -63,35 +65,35 @@ namespace CatalogService.UnitTests
         [Fact]
         public async Task GetAllCategories()
         {
-            var service = new CatalogEFService(_context, _mapper);
+            var service = GetService();
             var categories = await service.GetAllCategories();
             Assert.Equal(4, categories.Count);
         }
         [Fact]
         public async Task GetCategoriesByParent()
         {
-            var service = new CatalogEFService(_context, _mapper);
+            var service = GetService();
             var categories = await service.GetCategories(1);
             Assert.Equal(2, categories.Count);
         }
         [Fact]
         public async Task GetCategoriesByParent_Empty()
         {
-            var service = new CatalogEFService(_context, _mapper);
+            var service = GetService();
             var categories = await service.GetCategories(2);
             Assert.Empty(categories);
         }
         [Fact]
         public async Task GetCategoriesByParent_NonExistentId()
         {
-            var service = new CatalogEFService(_context, _mapper);
+            var service = GetService();
             var categories = await service.GetCategories(5);
             Assert.Empty(categories);
         }
         [Fact]
         public async Task AddCategory()
         {
-            var service = new CatalogEFService(_context, _mapper);
+            var service = GetService();
             var newCategory = new CategoryDTO() { Name = "Rags", Image = "" };
             var categoryAdded = await service.AddCategory(newCategory);
             Assert.NotNull(categoryAdded);
@@ -102,7 +104,7 @@ namespace CatalogService.UnitTests
         [Fact]
         public async Task AddCategory_WithParentCategory()
         {
-            var service = new CatalogEFService(_context, _mapper);
+            var service = GetService();
             var newCategory = new CategoryDTO() { Name = "Rags", Image = "", ParentCategoryId = 1 };
             var categoryAdded = await service.AddCategory(newCategory);
             Assert.NotNull(categoryAdded);
@@ -114,14 +116,14 @@ namespace CatalogService.UnitTests
         [Fact]
         public async Task AddCategory_RepeatedName()
         {
-            var service = new CatalogEFService(_context, _mapper);
+            var service = GetService();
             var newCategory = new CategoryDTO() { Name = "Mops" };
             await Assert.ThrowsAsync<ArgumentException>(() => service.AddCategory(newCategory));
         }
         [Fact]
         public async Task DeleteCategory()
         {
-            var service = new CatalogEFService(_context, _mapper);
+            var service = GetService();
             await service.DeleteCategory(2);
             var categoriesNum = _context.Categories.Count();
             Assert.Equal(3, categoriesNum);
@@ -129,7 +131,7 @@ namespace CatalogService.UnitTests
         [Fact]
         public async Task DeleteCategory_CategoryParent()
         {
-            var service = new CatalogEFService(_context, _mapper);
+            var service = GetService();
             await service.DeleteCategory(1);
             var categoriesNum = _context.Categories.Count();
             Assert.Equal(3, categoriesNum);
@@ -137,7 +139,7 @@ namespace CatalogService.UnitTests
         [Fact]
         public async Task DeleteCategory_NonExistentId()
         {
-            var service = new CatalogEFService(_context, _mapper);
+            var service = GetService();
             await service.DeleteCategory(99);
             var categoriesNum = _context.Categories.Count();
             Assert.Equal(4, categoriesNum);
@@ -145,7 +147,7 @@ namespace CatalogService.UnitTests
         [Fact]
         public async Task UpdateCategory()
         {
-            var service = new CatalogEFService(_context, _mapper);
+            var service = GetService();
             var categoryUpdated = new CategoryDTO()
             {
                 Name = "Buckets",
@@ -159,7 +161,7 @@ namespace CatalogService.UnitTests
         [Fact]
         public async Task UpdateCategory_ParentCategory()
         {
-            var service = new CatalogEFService(_context, _mapper);
+            var service = GetService();
             var categoryUpdated = new CategoryDTO()
             {
                 Name = "Buckets",
@@ -174,13 +176,21 @@ namespace CatalogService.UnitTests
         [Fact]
         public async Task UpdateCategory_WrongId()
         {
-            var service = new CatalogEFService(_context, _mapper);
+            var service = GetService();
             var categoryUpdated = new CategoryDTO()
             {
                 Name = "Buckets",
                 Image = "",
             };
             await Assert.ThrowsAsync<KeyNotFoundException>(() => service.UpdateCategory(10,categoryUpdated));
+        }
+
+        private ICatalogService GetService()
+        {
+            var mockMQ = new Mock<IMQClient>();
+            mockMQ.Setup(s => s.PublishItemUpdated(It.IsAny<MessagingService.Contracts.Item>()));
+            mockMQ.Setup(s => s.PublishItemDeleted(It.IsAny<int>()));
+            return new CatalogEFService(_context, _mapper, mockMQ.Object);
         }
     }
 }

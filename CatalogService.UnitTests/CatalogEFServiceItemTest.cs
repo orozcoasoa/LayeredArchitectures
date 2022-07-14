@@ -2,12 +2,9 @@
 using CatalogService.BLL;
 using CatalogService.BLL.Entities;
 using CatalogService.DAL;
+using MessagingService;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Moq;
 
 namespace CatalogService.UnitTests
 {
@@ -70,14 +67,14 @@ namespace CatalogService.UnitTests
         [Fact]
         public async Task GetAllItems()
         {
-            var service = new CatalogEFService(_context, _mapper);
+            var service = GetService();
             var items = await service.GetAllItems();
             Assert.Equal(2, items.Count);
         }
         [Fact]
         public async Task GetItemsByCategory()
         {
-            var service = new CatalogEFService(_context, _mapper);
+            var service = GetService();
             var qry = new ItemQuery() { CategoryId = 1, Page = 1, Limit = 20 };
             var items = await service.GetItems(qry);
             Assert.Equal(2, items.Count());
@@ -85,7 +82,7 @@ namespace CatalogService.UnitTests
         [Fact]
         public async Task GetItemsByCategory_InvalidId()
         {
-            var service = new CatalogEFService(_context, _mapper);
+            var service = GetService();
             var qry = new ItemQuery() { CategoryId = 5, Page = 1, Limit = 1 };
             var items = await service.GetItems(qry);
             Assert.Empty(items);
@@ -93,7 +90,7 @@ namespace CatalogService.UnitTests
         [Fact]
         public async Task GetItemsByCategory_WithPagination()
         {
-            var service = new CatalogEFService(_context, _mapper);
+            var service = GetService();
             var qry = new ItemQuery() { CategoryId = 1, Page = 1, Limit = 1 };
             var items = await service.GetItems(qry);
             Assert.Single(items);
@@ -106,7 +103,7 @@ namespace CatalogService.UnitTests
         [Fact]
         public async Task GetItemsByPriceRange()
         {
-            var service = new CatalogEFService(_context, _mapper);
+            var service = GetService();
             var qry = new ItemQuery() { CategoryId = 1, Page = 1, Limit = 20, PriceMax = 15, PriceMin=5 };
             var items = await service.GetItems(qry);
             Assert.Single(items);
@@ -114,7 +111,7 @@ namespace CatalogService.UnitTests
         [Fact]
         public async Task GetItemsByPriceRange_MaxPrice()
         {
-            var service = new CatalogEFService(_context, _mapper);
+            var service = GetService();
             var qry = new ItemQuery() { CategoryId = 1, Page = 1, Limit = 20, PriceMax = 35 };
             var items = await service.GetItems(qry);
             Assert.Equal(2,items.Count());
@@ -122,7 +119,7 @@ namespace CatalogService.UnitTests
         [Fact]
         public async Task GetItemsByPriceRange_MinPrice()
         {
-            var service = new CatalogEFService(_context, _mapper);
+            var service = GetService();
             var qry = new ItemQuery() { CategoryId = 1, Page = 1, Limit = 20, PriceMin = 15 };
             var items = await service.GetItems(qry);
             Assert.Single(items);
@@ -130,7 +127,7 @@ namespace CatalogService.UnitTests
         [Fact]
         public async Task GetItem()
         {
-            var service = new CatalogEFService(_context, _mapper);
+            var service = GetService();
             var item = await service.GetItem(1);
             Assert.NotNull(item);
             Assert.Equal(1, item.Id);
@@ -141,14 +138,14 @@ namespace CatalogService.UnitTests
         [Fact]
         public async Task GetItem_InvalidId()
         {
-            var service = new CatalogEFService(_context, _mapper);
+            var service = GetService();
             var item = await service.GetItem(10);
             Assert.Null(item);
         }
         [Fact]
         public async Task GetItemByName()
         {
-            var service = new CatalogEFService(_context, _mapper);
+            var service = GetService();
             var item = await service.GetItem("Broom1");
             Assert.NotNull(item);
             Assert.Equal(1, item.Id);
@@ -159,14 +156,14 @@ namespace CatalogService.UnitTests
         [Fact]
         public async Task GetItemByName_Invalid()
         {
-            var service = new CatalogEFService(_context, _mapper);
+            var service = GetService();
             var item = await service.GetItem("Broo");
             Assert.Null(item);
         }
         [Fact]
         public async Task DeleteItem()
         {
-            var service = new CatalogEFService(_context, _mapper);
+            var service = GetService();
             await service.DeleteItem(1);
             var numItems = await _context.Items.CountAsync();
             Assert.Equal(1, numItems);
@@ -174,7 +171,7 @@ namespace CatalogService.UnitTests
         [Fact]
         public async Task DeleteItem_InexistentId()
         {
-            var service = new CatalogEFService(_context, _mapper);
+            var service = GetService();
             await service.DeleteItem(10);
             var numItems = await _context.Items.CountAsync();
             Assert.Equal(2, numItems);
@@ -182,7 +179,7 @@ namespace CatalogService.UnitTests
         [Fact]
         public async Task AddItem()
         {
-            var service = new CatalogEFService(_context, _mapper);
+            var service = GetService();
             var newItem = new ItemDTO()
             {
                 Name = "Rag1",
@@ -204,7 +201,7 @@ namespace CatalogService.UnitTests
         [Fact]
         public async Task AddItem_InvalidName()
         {
-            var service = new CatalogEFService(_context, _mapper);
+            var service = GetService();
             var newItem = new ItemDTO()
             {
                 Name = "Broom1",
@@ -219,7 +216,7 @@ namespace CatalogService.UnitTests
         [Fact]
         public async Task AddItem_InvalidPrice()
         {
-            var service = new CatalogEFService(_context, _mapper);
+            var service = GetService();
             var newItem = new ItemDTO()
             {
                 Name = "Rag1",
@@ -234,7 +231,7 @@ namespace CatalogService.UnitTests
         [Fact]
         public async Task AddItem_InvalidAmount()
         {
-            var service = new CatalogEFService(_context, _mapper);
+            var service = GetService();
             var newItem = new ItemDTO()
             {
                 Name = "Rag1",
@@ -249,7 +246,7 @@ namespace CatalogService.UnitTests
         [Fact]
         public async Task AddItem_InvalidCategory()
         {
-            var service = new CatalogEFService(_context, _mapper);
+            var service = GetService();
             var newItem = new ItemDTO()
             {
                 Name = "Rag1",
@@ -263,7 +260,7 @@ namespace CatalogService.UnitTests
         [Fact]
         public async Task UpdateItem()
         {
-            var service = new CatalogEFService(_context, _mapper);
+            var service = GetService();
             var item = new ItemDTO()
             {
                 Name = "Rag1",
@@ -281,7 +278,7 @@ namespace CatalogService.UnitTests
         [Fact]
         public async Task UpdateItem_InvalidId()
         {
-            var service = new CatalogEFService(_context, _mapper);
+            var service = GetService();
             var item = new ItemDTO()
             {
                 Name = "Rag1",
@@ -296,7 +293,7 @@ namespace CatalogService.UnitTests
         [Fact]
         public async Task UpdateItem_InvalidPrice()
         {
-            var service = new CatalogEFService(_context, _mapper);
+            var service = GetService();
             var item = new ItemDTO()
             {
                 Name = "Rag1",
@@ -311,7 +308,7 @@ namespace CatalogService.UnitTests
         [Fact]
         public async Task UpdateItem_InvalidAmount()
         {
-            var service = new CatalogEFService(_context, _mapper);
+            var service = GetService();
             var item = new ItemDTO()
             {
                 Name = "Rag1",
@@ -326,7 +323,7 @@ namespace CatalogService.UnitTests
         [Fact]
         public async Task UpdateItem_InvalidCategory()
         {
-            var service = new CatalogEFService(_context, _mapper);
+            var service = GetService();
             var item = new ItemDTO()
             {
                 Name = "Rag1",
@@ -336,6 +333,14 @@ namespace CatalogService.UnitTests
                 Amount = 1
             };
             await Assert.ThrowsAsync<ArgumentException>(() => service.UpdateItem(1,item));
+        }
+
+        private ICatalogService GetService()
+        {
+            var mockMQ = new Mock<IMQClient>();
+            mockMQ.Setup(s => s.PublishItemUpdated(It.IsAny<MessagingService.Contracts.Item>()));
+            mockMQ.Setup(s => s.PublishItemDeleted(It.IsAny<int>()));
+            return new CatalogEFService(_context, _mapper, mockMQ.Object);
         }
     }
 }

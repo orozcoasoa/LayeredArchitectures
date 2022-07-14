@@ -1,14 +1,9 @@
 ﻿using AutoMapper;
-using CatalogService;
 using CatalogService.BLL.Entities;
 using CatalogService.BLL.Extensions;
+using MessagingService;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CatalogService.BLL
 {
@@ -16,11 +11,13 @@ namespace CatalogService.BLL
     {
         private readonly DAL.CatalogServiceDbContext _context;
         private readonly IMapper _mapper;
+        private readonly IMQClient _mqClient;
 
-        public CatalogEFService(DAL.CatalogServiceDbContext context, IMapper mapper)
+        public CatalogEFService(DAL.CatalogServiceDbContext context, IMapper mapper, IMQClient mqClient)
         {
             _context = context;
             _mapper = mapper;
+            _mqClient = mqClient;
         }
 
         #region Category
@@ -152,6 +149,7 @@ namespace CatalogService.BLL
             itemDAO.Id = 0;
             _context.Add(itemDAO);
             await _context.SaveChangesAsync();
+            _mqClient.PublishItemUpdated(_mapper.Map<MessagingService.Contracts.Item>(itemDAO));
             return _mapper.Map<Item>(itemDAO);
         }
         public async Task<List<Item>> GetAllItems() {
@@ -194,6 +192,7 @@ namespace CatalogService.BLL
             }
             _mapper.Map(item, itemDAO);
             await _context.SaveChangesAsync();
+            _mqClient.PublishItemUpdated(_mapper.Map<MessagingService.Contracts.Item>(itemDAO));
         }
         public async Task DeleteItem(int id)
         {
@@ -204,6 +203,7 @@ namespace CatalogService.BLL
             {
                 _context.Items.Remove(item);
                 await _context.SaveChangesAsync();
+                _mqClient.PublishItemDeleted(item.Id);
             }
         }
 
