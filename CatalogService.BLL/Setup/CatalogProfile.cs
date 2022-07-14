@@ -1,10 +1,5 @@
 ﻿using AutoMapper;
 using CatalogService.BLL.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CatalogService.BLL.Setup
 {
@@ -25,6 +20,8 @@ namespace CatalogService.BLL.Setup
             CreateMap<ItemDTO, Item>()
                 .ForMember(c => c.Category,
                         opt => opt.MapFrom((d) => new Category() { Id = d.CategoryId }));
+
+            CreateMap<DAL.Item, MessagingService.Contracts.Item>();
         }
     }
 }

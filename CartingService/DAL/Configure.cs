@@ -1,22 +1,24 @@
-﻿using LiteDB;
+﻿using CartingService.DAL.Entities;
+using LiteDB;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CartingService.DAL
 {
     public static class Configure
     {
-        public static void ConfigureServices(IServiceCollection services, string connectionString)
+        public static IServiceCollection ConfigureDAL(this IServiceCollection services)
         {
+            // TODO: use secrets such as key vault.
+            var config = services.BuildServiceProvider().GetService<IConfiguration>();
+            var connectionString = config.GetConnectionString("CartingDB");
             services.AddScoped<ILiteDatabase, LiteDatabase>((services) => new LiteDatabase(connectionString));
             services.AddScoped<ICartingRepository, NoSQLCartingRepository>();
 
-            BsonMapper.Global.Entity<CartDAO>().DbRef(c => c.Items, NoSQLCartingRepository.items);
-            BsonMapper.Global.Entity<ItemDAO>().DbRef(i => i.Cart, NoSQLCartingRepository.carts);
+            BsonMapper.Global.Entity<CartDAO>().DbRef(c => c.Items, NoSQLCartingRepository.cartitems);
+            BsonMapper.Global.Entity<CartItemDAO>().DbRef(i => i.Cart, NoSQLCartingRepository.carts);
+            BsonMapper.Global.Entity<CartItemDAO>().DbRef(i => i.Item, NoSQLCartingRepository.items);
+            return services;
         }
     }
 }

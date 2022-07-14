@@ -1,9 +1,5 @@
-﻿using LiteDB;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CartingService.DAL.Entities;
+using LiteDB;
 
 namespace CartingService.UnitTests
 {
@@ -19,30 +15,47 @@ namespace CartingService.UnitTests
             _db = new LiteDatabase("test" + myCount + ".db");
             _db.DropCollection(NoSQLCartingRepository.carts);
             _db.DropCollection(NoSQLCartingRepository.items);
+            _db.DropCollection(NoSQLCartingRepository.cartitems);
             BsonMapper.Global.Entity<CartDAO>().Id(c => c.Id);
             BsonMapper.Global.Entity<ItemDAO>().Id(i => i.Id);
+            BsonMapper.Global.Entity<CartItemDAO>().Id(c => c.Id, true);
 
-            BsonMapper.Global.Entity<CartDAO>().DbRef(c => c.Items, NoSQLCartingRepository.items);
-            BsonMapper.Global.Entity<ItemDAO>().DbRef(i => i.Cart, NoSQLCartingRepository.carts);
+            BsonMapper.Global.Entity<CartDAO>().DbRef(c => c.Items, NoSQLCartingRepository.cartitems);
+            BsonMapper.Global.Entity<CartItemDAO>().DbRef(i => i.Cart, NoSQLCartingRepository.carts);
+            BsonMapper.Global.Entity<CartItemDAO>().DbRef(i => i.Item, NoSQLCartingRepository.items);
 
             _existingCartId = Guid.NewGuid();
-            var item1 = new ItemDAO { Name = "Item1", Id = 1, Price = 10, Quantity = 1, Image = null };
-            var item2 = new ItemDAO { Name = "Item2", Id = 2, Price = 20, Quantity = 2, Image = null };
+            var item1 = new ItemDAO() { Name = "Item1", Id = 1, Image = null, Price = 10};
+            var item2 = new ItemDAO() { Name = "Item2", Id = 2, Image = null, Price = 20};
+
+            var itemCart1 = new CartItemDAO
+            {
+                Item = item1,
+                Quantity = 1
+            };
+            var itemCart2 = new CartItemDAO
+            {
+                Item = item2,
+                Quantity = 2
+            };
             var cart = new CartDAO()
             {
                 Id = _existingCartId,
-                Items = new List<ItemDAO>()
+                Items = new List<CartItemDAO>()
                     {
-                        item1, item2
+                        itemCart1, itemCart2
                     }
             };
-            var col = _db.GetCollection<CartDAO>(NoSQLCartingRepository.carts);
-            col.Insert(cart);
-            item1.Cart = cart;
-            item2.Cart = cart;
             var colItems = _db.GetCollection<ItemDAO>(NoSQLCartingRepository.items);
             colItems.Insert(item1);
             colItems.Insert(item2);
+            itemCart1.Cart = cart;
+            itemCart2.Cart = cart;
+            var colCartItems = _db.GetCollection<CartItemDAO>(NoSQLCartingRepository.cartitems);
+            colCartItems.Insert(itemCart1);
+            colCartItems.Insert(itemCart2);
+            var colCart = _db.GetCollection<CartDAO>(NoSQLCartingRepository.carts);
+            colCart.Insert(cart);
         }
 
         [Fact]
@@ -82,8 +95,9 @@ namespace CartingService.UnitTests
         public async Task AddItemToCart()
         {
             var repo = new NoSQLCartingRepository(_db);
-            var item = new ItemDAO() { Id = 3, Name = "Item3", Quantity = 3, Price = 30, Image = null };
-            await repo.AddItemToCart(_existingCartId, item);
+            var item = new ItemDAO() { Id = 3, Name = "Item3", Image = null, Price = 30 };
+            var cartItem = new CartItemDAO() { Id = 3, Item = item, Quantity = 3};
+            await repo.AddItemToCart(_existingCartId, cartItem);
 
             var cart = await repo.GetCart(_existingCartId);
             Assert.Equal(_existingCartId, cart.Id);
@@ -93,9 +107,10 @@ namespace CartingService.UnitTests
         public async Task AddItemToCart_NonExistingCart()
         {
             var repo = new NoSQLCartingRepository(_db);
-            var item = new ItemDAO() { Id = 3, Name = "Item3", Quantity = 3, Price = 30, Image = null };
+            var item = new ItemDAO() { Id = 3, Name = "Item3", Image = null, Price = 30 };
+            var cartItem = new CartItemDAO() { Item = item, Quantity = 3};
             var newGuid = Guid.NewGuid();
-            await repo.AddItemToCart(newGuid, item);
+            await repo.AddItemToCart(newGuid, cartItem);
 
             var cart = await repo.GetCart(newGuid);
             Assert.Null(cart);
@@ -104,8 +119,9 @@ namespace CartingService.UnitTests
         public async Task AddItemToCart_AlreadyExistingItem()
         {
             var repo = new NoSQLCartingRepository(_db);
-            var item = new ItemDAO { Name = "Item2", Id = 2, Price = 20, Quantity = 2, Image = null };
-            await repo.AddItemToCart(_existingCartId, item);
+            var item = new ItemDAO() { Id = 2, Name = "Item2", Image = null, Price = 20 };
+            var cartItem = new CartItemDAO { Item = item, Quantity = 2};
+            await repo.AddItemToCart(_existingCartId, cartItem);
 
             var cart = await repo.GetCart(_existingCartId);
             Assert.Equal(_existingCartId, cart.Id);
@@ -151,7 +167,7 @@ namespace CartingService.UnitTests
             var cart = await repo.GetCart(_existingCartId);
             Assert.Equal(_existingCartId, cart.Id);
             Assert.Equal(2, cart.Items.Count);
-            Assert.Equal(4, cart.Items.First(i => i.Id == 1).Quantity);
+            Assert.Equal(4, cart.Items.First(i => i.Item.Id == 1).Quantity);
         }
         [Fact]
         public async Task UpdateItemQuantity_NonExistantItem()
@@ -162,7 +178,7 @@ namespace CartingService.UnitTests
             var cart = await repo.GetCart(_existingCartId);
             Assert.Equal(_existingCartId, cart.Id);
             Assert.Equal(2, cart.Items.Count);
-            Assert.Equal(1, cart.Items.First(i => i.Id == 1).Quantity);
+            Assert.Equal(1, cart.Items.First(i => i.Item.Id == 1).Quantity);
         }
         [Fact]
         public async Task UpdateItemQuantity_NonExistantCart()
@@ -174,8 +190,67 @@ namespace CartingService.UnitTests
             var cart = await repo.GetCart(_existingCartId);
             Assert.Equal(_existingCartId, cart.Id);
             Assert.Equal(2, cart.Items.Count);
-            Assert.Equal(1, cart.Items.First(i => i.Id == 1).Quantity);
+            Assert.Equal(1, cart.Items.First(i => i.Item.Id == 1).Quantity);
         }
-
+        [Fact]
+        public void ItemUpdated_NewItem()
+        {
+            var itemToAdd = new ItemDAO() { Id = 3, Name = "Item3", Price = 30, Image = null };
+            var repo = new NoSQLCartingRepository(_db);
+            repo.ItemUpdated(itemToAdd);
+            var col = _db.GetCollection<ItemDAO>(NoSQLCartingRepository.items);
+            var numItems = col.Count();
+            Assert.Equal(3, numItems);
+            var itemAdded = col.Query().Where(i => i.Id == itemToAdd.Id).SingleOrDefault();
+            Assert.Equal(itemToAdd.Name, itemAdded.Name);
+            Assert.Equal(itemToAdd.Price, itemAdded.Price);
+            Assert.Null(itemAdded.Image);
+        }
+        [Fact]
+        public void ItemUpdated_ExistingItem()
+        {
+            var itemToUpdate = new ItemDAO() { Id = 2, Name = "Item3", Price = 30, Image = null };
+            var repo = new NoSQLCartingRepository(_db);
+            repo.ItemUpdated(itemToUpdate);
+            var col = _db.GetCollection<ItemDAO>(NoSQLCartingRepository.items);
+            var numItems = col.Count();
+            Assert.Equal(2, numItems);
+            var itemUpdated = col.Query().Where(i => i.Id == itemToUpdate.Id).SingleOrDefault();
+            Assert.Equal(itemToUpdate.Name, itemUpdated.Name);
+            Assert.Equal(itemToUpdate.Price, itemUpdated.Price);
+            Assert.Null(itemUpdated.Image);
+        }
+        [Fact]
+        public void ItemDeleted_ExistingItem()
+        {
+            var repo = new NoSQLCartingRepository(_db);
+            repo.ItemDeleted(1);
+            var col = _db.GetCollection<ItemDAO>(NoSQLCartingRepository.items);
+            var numItems = col.Count();
+            Assert.Equal(1, numItems);
+        }
+        [Fact]
+        public void ItemDeleted_NonExistingItem()
+        {
+            var repo = new NoSQLCartingRepository(_db);
+            repo.ItemDeleted(3);
+            var col = _db.GetCollection<ItemDAO>(NoSQLCartingRepository.items);
+            var numItems = col.Count();
+            Assert.Equal(2, numItems);
+        }
+        [Fact]
+        public void ExistsItem()
+        {
+            var repo = new NoSQLCartingRepository(_db);
+            var exists = repo.ExistsItem(1);
+            Assert.True(exists);
+        }
+        [Fact]
+        public void ExistsItem_NonExistingItem()
+        {
+            var repo = new NoSQLCartingRepository(_db);
+            var exists = repo.ExistsItem(5);
+            Assert.False(exists);
+        }
     }
 }

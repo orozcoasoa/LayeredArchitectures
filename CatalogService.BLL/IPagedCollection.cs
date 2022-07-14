@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CatalogService.BLL
+﻿namespace CatalogService.BLL
 {
     public interface IPagedCollection<T> : IEnumerable<T>
     {

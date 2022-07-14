@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CartingService.DAL.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace CartingService.DAL
 {
@@ -10,6 +11,7 @@ namespace CartingService.DAL
         }
 
         public DbSet<CartDAO> Carts { get; set; }
+        public DbSet<CartItemDAO> CartItems { get; set; }
         public DbSet<ItemDAO> Items { get; set; }
     }
 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CartingService.BLL
+﻿namespace CartingService.BLL
 {
     public interface ICartingService
     {
@@ -14,5 +8,8 @@ namespace CartingService.BLL
         Task<Cart> GetCart(Guid cartId);
         Task<bool> ExistsCart(Guid cartId);
         Task<bool> ExistsItemOnCart(Guid cartId, int itemId);
+        Task<bool> ExistsItem(int itemId);
+        void ItemUpdated(MessagingService.Contracts.Item item);
+        void ItemDeleted(int itemId);
     }
 }

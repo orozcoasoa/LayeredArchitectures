@@ -1,3 +1,5 @@
+using CartingService.BLL.Setup;
+using CartingService.DAL;
 using CartingService.WebAPI;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
@@ -29,8 +31,9 @@ builder.Services.AddSwaggerGen(options =>
     var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
 });
-CartingService.DAL.Configure.ConfigureServices(builder.Services, "Sample.db");
-CartingService.BLL.Configure.ConfigureServices(builder.Services);
+
+builder.Services.ConfigureDAL()
+                .ConfigureBLL();
 
 var app = builder.Build();
 
