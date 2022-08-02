@@ -1,7 +1,8 @@
 ﻿using CatalogService.BLL;
 using CatalogService.BLL.Entities;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Web.Resource;
 
 namespace CatalogService.WebAPI.Controllers
 {
@@ -38,6 +39,8 @@ namespace CatalogService.WebAPI.Controllers
             return Ok(item);
         }
 
+        [Authorize]
+        [RequiredScope("catalog.write")]
         [HttpPost(Name =nameof(AddItem))]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -47,6 +50,8 @@ namespace CatalogService.WebAPI.Controllers
             return CreatedAtAction(nameof(AddItem), new { id = createdItem.Id }, createdItem);
         }
 
+        [Authorize]
+        [RequiredScope("catalog.write")]
         [HttpPut("{id}", Name = nameof(UpdateItem))]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -58,6 +63,8 @@ namespace CatalogService.WebAPI.Controllers
             return NoContent();
         }
 
+        [Authorize]
+        [RequiredScope("catalog.write")]
         [HttpDelete("{id}", Name = nameof(DeleteItem))]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]

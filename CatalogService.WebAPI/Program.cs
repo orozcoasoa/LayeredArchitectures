@@ -1,6 +1,7 @@
 using CatalogService.BLL.Setup;
 using CatalogService.DAL;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.Identity.Web;
 using static System.Net.Mime.MediaTypeNames;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +14,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddMicrosoftIdentityWebApiAuthentication(builder.Configuration)
+                .EnableTokenAcquisitionToCallDownstreamApi(opt => opt.EnablePiiLogging = false)
+                .AddMicrosoftGraph(builder.Configuration.GetSection("DownstreamApi"))
+                .AddInMemoryTokenCaches();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -48,6 +52,7 @@ app.UseExceptionHandler(excHApp =>
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
