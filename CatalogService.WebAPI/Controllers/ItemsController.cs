@@ -2,6 +2,7 @@
 using CatalogService.BLL.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Graph;
 using Microsoft.Identity.Web.Resource;
 
 namespace CatalogService.WebAPI.Controllers
@@ -39,22 +40,24 @@ namespace CatalogService.WebAPI.Controllers
             return Ok(item);
         }
 
-        [Authorize]
-        [RequiredScope("catalog.write")]
+        [Authorize(Roles = "Catalog.Manager")]
         [HttpPost(Name =nameof(AddItem))]
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<Item>> AddItem([FromBody] ItemDTO item)
         {
-            var createdItem = await _service.AddItem(item);
-            return CreatedAtAction(nameof(AddItem), new { id = createdItem.Id }, createdItem);
+                var createdItem = await _service.AddItem(item);
+                return CreatedAtAction(nameof(AddItem), new { id = createdItem.Id }, createdItem);
         }
 
-        [Authorize]
-        [RequiredScope("catalog.write")]
+        [Authorize(Roles = "Catalog.Manager")]
         [HttpPut("{id}", Name = nameof(UpdateItem))]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> UpdateItem([FromRoute] int id, [FromBody] ItemDTO item)
@@ -63,10 +66,11 @@ namespace CatalogService.WebAPI.Controllers
             return NoContent();
         }
 
-        [Authorize]
-        [RequiredScope("catalog.write")]
+        [Authorize(Roles = "Catalog.Manager")]
         [HttpDelete("{id}", Name = nameof(DeleteItem))]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> DeleteItem([FromRoute] int id)
         {
