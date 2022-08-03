@@ -180,7 +180,7 @@ namespace CatalogService.BLL
         }
         public async Task<ItemDetails> GetItemDetails(int id)
         {
-            var item = await GetItem(id);
+            var item = await _context.Items.FindAsync(id);
             if (item == null)
                 return null;
             else

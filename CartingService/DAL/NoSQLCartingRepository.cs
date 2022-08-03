@@ -20,13 +20,17 @@ namespace CartingService.DAL
             var cart = await GetCart(id);
             if (cart == null || cart.Items.Exists(i => i.Item.Id == item.Item.Id))
                 return;
-
-            cart.Items.Add(item);
-            var col = _db.GetCollection<CartDAO>(carts);
-            await Task.Run(() => col.Update(cart));
+            
             var itemsCol = _db.GetCollection<CartItemDAO>(cartitems);
             item.Cart = cart;
             await Task.Run(() => itemsCol.Upsert(item));
+
+            item = itemsCol.Query()
+                .Where(i => i.Item.Id == item.Item.Id && i.Cart.Id == id)
+                .FirstOrDefault();
+            cart.Items.Add(item);
+            var col = _db.GetCollection<CartDAO>(carts);
+            await Task.Run(() => col.Update(cart));
         }
         public async Task<CartDAO> CreateCart(Guid id)
         {
