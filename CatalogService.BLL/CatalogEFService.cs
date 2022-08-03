@@ -178,6 +178,17 @@ namespace CatalogService.BLL
             var item = await _context.Items.FindAsync(id);
             return _mapper.Map<Item>(item);
         }
+        public async Task<ItemDetails> GetItemDetails(int id)
+        {
+            var item = await GetItem(id);
+            if (item == null)
+                return null;
+            else
+            {
+                //Would be replaced for DB read logic.
+                return GetDummyItemDetails(id);
+            }
+        }
         public async Task UpdateItem(int id, ItemDTO itemDTO)
         {
             var item = _mapper.Map<Item>(itemDTO);
@@ -199,7 +210,7 @@ namespace CatalogService.BLL
             var item = await _context.Items
                             .Where(i => i.Id == id)
                             .FirstOrDefaultAsync();
-            if(item != null)
+            if (item != null)
             {
                 _context.Items.Remove(item);
                 await _context.SaveChangesAsync();
@@ -215,7 +226,7 @@ namespace CatalogService.BLL
         }
         private async Task ValidateItemName(string name)
         {
-            if(name?.Length > 50)
+            if (name?.Length > 50)
             {
                 //TODO: create custom exception.
                 throw new ArgumentException("Name", "Max length is 50");
@@ -259,14 +270,14 @@ namespace CatalogService.BLL
                 throw new ArgumentException("Amount", "Amount must be positive");
             }
         }
-        private Expression<Func<DAL.Item,bool>> GetItemFilter(ItemQuery itemQuery)
+        private Expression<Func<DAL.Item, bool>> GetItemFilter(ItemQuery itemQuery)
         {
             var filterConstant = Expression.Constant(true);
             Expression<Func<DAL.Item, bool>> filter = i => i.CategoryId == itemQuery.CategoryId;
             if (itemQuery.PriceMax.HasValue)
             {
                 Expression<Func<DAL.Item, bool>> priceMaxFilter = i => i.Price <= itemQuery.PriceMax;
-                var invokedExpr = Expression.Invoke(priceMaxFilter,filter.Parameters.Cast<Expression>());
+                var invokedExpr = Expression.Invoke(priceMaxFilter, filter.Parameters.Cast<Expression>());
 
                 filter = Expression.Lambda<Func<DAL.Item, bool>>(
                             Expression.AndAlso(filter.Body, invokedExpr), filter.Parameters);
@@ -282,6 +293,19 @@ namespace CatalogService.BLL
 
             return filter;
 
+        }
+        private ItemDetails GetDummyItemDetails(int id)
+        {
+            var itemDetails = new ItemDetails() { ItemId = id };
+            itemDetails.Details = GetItemDetailsDictionary(id);
+            return itemDetails;
+        }
+        private Dictionary<string, string> GetItemDetailsDictionary(int id)
+        {
+            var details = new Dictionary<string, string>();
+            details["brand"] = "google";
+            details["model"] = "pixel 6";
+            return details;
         }
         #endregion
     }

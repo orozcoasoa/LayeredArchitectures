@@ -40,6 +40,18 @@ namespace CatalogService.WebAPI.Controllers
             return Ok(item);
         }
 
+        [HttpGet("{id}/details", Name = nameof(GetItemDetails))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<ItemDetails>> GetItemDetails([FromRoute] int id)
+        {
+            var itemDetails = await _service.GetItemDetails(id);
+            if (itemDetails == null)
+                return NotFound();
+            return Ok(itemDetails);
+        }
+
         [Authorize(Roles = "Catalog.Manager")]
         [HttpPost(Name =nameof(AddItem))]
         [ProducesResponseType(StatusCodes.Status201Created)]
