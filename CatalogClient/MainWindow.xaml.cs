@@ -37,8 +37,8 @@ namespace CatalogClient
             get
             {
                 string baseAddress = CatalogBaseAddress;
-                return baseAddress.EndsWith("/") ? CatalogBaseAddress + "api/items"
-                                                 : CatalogBaseAddress + "/api/items";
+                return baseAddress.EndsWith("/") ? CatalogBaseAddress + "items"
+                                                 : CatalogBaseAddress + "/items";
             }
         }
 
