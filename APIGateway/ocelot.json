@@ -1,0 +1,102 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/items",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5209
+        }
+      ],
+      "UpstreamPathTemplate": "/items",
+      "UpstreamHttpMethod": [ "Get" ],
+      "FileCacheOptions": {
+        "TtlSeconds": 60,
+        "Region": "readonly"
+      },
+      "Priority": 0
+    },
+    {
+      "DownstreamPathTemplate": "/api/items/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5209
+        }
+      ],
+      "UpstreamPathTemplate": "/items/{id}",
+      "UpstreamHttpMethod": [ "Get" ],
+      "Key": "item",
+      "Priority": 1
+    },
+    {
+      "DownstreamPathTemplate": "/api/items/{id}/details",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5209
+        }
+      ],
+      "UpstreamPathTemplate": "/items/{id}/details",
+      "UpstreamHttpMethod": [ "Get" ],
+      "Key": "itemdetails",
+      "Priority": 2
+    },
+    {
+      "DownstreamPathTemplate": "/api/categories",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5209
+        }
+      ],
+      "UpstreamPathTemplate": "/categories",
+      "UpstreamHttpMethod": [],
+      "FileCacheOptions": {
+        "TtlSeconds": 60,
+        "Region": "readonly"
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/categories/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5209
+        }
+      ],
+      "UpstreamPathTemplate": "/categories/{id}",
+      "UpstreamHttpMethod": []
+    },
+    {
+      "DownstreamPathTemplate": "/api/v2/carts/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5034
+        }
+      ],
+      "UpstreamPathTemplate": "/carts/{id}",
+      "UpstreamHttpMethod": []
+    }
+  ],
+  "Aggregates": [
+    {
+      "RouteKeys": [
+        "item",
+        "itemdetails"
+      ],
+      "UpStreamPathTemplate": "/itemdetails/{id}",
+      "Aggregator": "ItemDetailsAggregator"
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:5001"
+  }
+}
