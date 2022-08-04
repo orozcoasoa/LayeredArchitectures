@@ -18,6 +18,8 @@ namespace CartingService.DAL
             BsonMapper.Global.Entity<CartDAO>().DbRef(c => c.Items, NoSQLCartingRepository.cartitems);
             BsonMapper.Global.Entity<CartItemDAO>().DbRef(i => i.Cart, NoSQLCartingRepository.carts);
             BsonMapper.Global.Entity<CartItemDAO>().DbRef(i => i.Item, NoSQLCartingRepository.items);
+
+            BsonMapper.Global.Entity<CartItemDAO>().Id(c => c.Id, true);
             return services;
         }
     }

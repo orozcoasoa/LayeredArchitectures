@@ -54,6 +54,39 @@ namespace CatalogService.WebAPI.Tests
             Assert.Equal(StatusCodes.Status404NotFound, notFoundResult.StatusCode);
         }
         [Fact]
+        public async Task GetItemDetails_Ok()
+        {
+            var itemDetailsToReturn = new ItemDetails() { ItemId = 1, Details = new Dictionary<string, string>() };
+            var serviceMock = new Mock<ICatalogService>();
+            serviceMock.Setup(s => s.GetItemDetails(itemDetailsToReturn.ItemId))
+                .Returns(Task.FromResult(itemDetailsToReturn));
+
+            var controller = new ItemsController(serviceMock.Object);
+            var result = await controller.GetItemDetails(itemDetailsToReturn.ItemId);
+            Assert.NotNull(result);
+            Assert.IsType<OkObjectResult>(result.Result);
+            var okResult = result.Result as OkObjectResult;
+            Assert.Equal(StatusCodes.Status200OK, okResult.StatusCode);
+            Assert.NotNull(okResult.Value);
+            var itemDetails = (ItemDetails)okResult.Value;
+            Assert.Equal(itemDetailsToReturn.ItemId, itemDetails.ItemId);
+            Assert.Equal(itemDetailsToReturn.Details, itemDetails.Details);
+        }
+        [Fact]
+        public async Task GetItemDetails_NotFound()
+        {
+            var serviceMock = new Mock<ICatalogService>();
+            serviceMock.Setup(s => s.GetItemDetails(1))
+                .Returns(Task.FromResult((ItemDetails)null));
+
+            var controller = new ItemsController(serviceMock.Object);
+            var result = await controller.GetItemDetails(1);
+            Assert.NotNull(result);
+            Assert.IsType<NotFoundResult>(result.Result);
+            var notFoundResult = result.Result as NotFoundResult;
+            Assert.Equal(StatusCodes.Status404NotFound, notFoundResult.StatusCode);
+        }
+        [Fact]
         public async Task AddItem()
         {
             var newItem = new ItemDTO() { Name = "Item1" };

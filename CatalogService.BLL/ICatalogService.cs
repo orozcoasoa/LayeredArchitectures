@@ -20,6 +20,7 @@ namespace CatalogService.BLL
         Task<IPagedCollection<Item>> GetItems(ItemQuery itemQuery);
         Task<Item> GetItem(string name);
         Task<Item> GetItem(int id);
+        Task<ItemDetails> GetItemDetails(int id);
         Task UpdateItem(int id, ItemDTO itemDTO);
         Task DeleteItem(int id);
         #endregion
