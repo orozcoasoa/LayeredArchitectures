@@ -7,6 +7,7 @@ using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 using Ocelot.Cache.CacheManager;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Builder;
 
 namespace APIGateway
 {
@@ -50,6 +51,7 @@ namespace APIGateway
             .UseIISIntegration()
             .Configure(app =>
             {
+                app.UseAuthentication();
                 app.UseOcelot().Wait();
             })
             .Build()
