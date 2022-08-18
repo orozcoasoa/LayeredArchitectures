@@ -27,6 +27,7 @@ namespace CatalogService.BLL
             await ValidateCategory(category);
             var categoryDAO = _mapper.Map<DAL.Category>(category);
             categoryDAO.Id = 0;
+            if (categoryDAO.Image == null) categoryDAO.Image = "";
             if (categoryDAO.ParentCategoryId == 0 &&
                 !string.IsNullOrEmpty(category.ParentCategory?.Name))
             {
@@ -71,6 +72,7 @@ namespace CatalogService.BLL
         {
             var category = await _context.Categories
                             .Where(c => c.Id == id)
+                            .Include(c => c.ParentCategory)
                             .FirstOrDefaultAsync();
             return _mapper.Map<Category>(category);
         }
@@ -85,6 +87,7 @@ namespace CatalogService.BLL
         {
             var category = _mapper.Map<Category>(categoryDTO);
             category.Id = id;
+            if (category.Image == null) category.Image = "";
             ValidateParentCategory(category);
             var categoryDAO = await _context.Categories
                                     .Where(c => c.Id == id)
@@ -147,6 +150,7 @@ namespace CatalogService.BLL
             await ValidateItem(item);
             var itemDAO = _mapper.Map<DAL.Item>(item);
             itemDAO.Id = 0;
+            if (itemDAO.Image == null) itemDAO.Image = "";
             _context.Add(itemDAO);
             await _context.SaveChangesAsync();
             _mqClient.PublishItemUpdated(_mapper.Map<MessagingService.Contracts.Item>(itemDAO));
@@ -162,6 +166,7 @@ namespace CatalogService.BLL
             var itemsDAL = await _context.Items
                         //.Where(i => i.CategoryId == itemQuery.CategoryId)
                         .Where(filter)
+                        .Include(i => i.Category)
                         .ToPagedCollectionAsync(itemQuery.Page, itemQuery.Limit);
 
             var itemsList = _mapper.Map<IPagedCollection<DAL.Item>, IReadOnlyList<Item>>(itemsDAL);
@@ -193,6 +198,7 @@ namespace CatalogService.BLL
         {
             var item = _mapper.Map<Item>(itemDTO);
             item.Id = id;
+            if (item.Image == null) item.Image = "";
             ValidateItemNumbers(item);
             await ValidateItemCategory(item);
             var itemDAO = await _context.Items.FindAsync(item.Id);

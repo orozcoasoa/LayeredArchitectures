@@ -55,6 +55,8 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapGraphQL();
+
 app.MapControllers();
 
 app.Run();
