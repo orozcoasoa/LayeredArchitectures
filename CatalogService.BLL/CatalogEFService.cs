@@ -162,6 +162,7 @@ namespace CatalogService.BLL
             var itemsDAL = await _context.Items
                         //.Where(i => i.CategoryId == itemQuery.CategoryId)
                         .Where(filter)
+                        .Include(i => i.Category)
                         .ToPagedCollectionAsync(itemQuery.Page, itemQuery.Limit);
 
             var itemsList = _mapper.Map<IPagedCollection<DAL.Item>, IReadOnlyList<Item>>(itemsDAL);

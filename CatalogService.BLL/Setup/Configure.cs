@@ -1,4 +1,5 @@
-﻿using MessagingService;
+﻿using CatalogService.BLL.GraphQL;
+using MessagingService;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
@@ -25,7 +26,11 @@ namespace CatalogService.BLL.Setup
                 return conn.CreateConnection();
             });
             services.AddSingleton<IMQClient, RabbitMQClient>();
-            
+            services.AddGraphQLServer()
+                .AddType<CategoryType>()
+                .AddType<ItemType>()
+                .AddQueryType<CatalogQuery>();
+
             return services;
         }
     }
