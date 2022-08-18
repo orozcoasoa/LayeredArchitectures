@@ -29,7 +29,9 @@ namespace CatalogService.BLL.Setup
             services.AddGraphQLServer()
                 .AddType<CategoryType>()
                 .AddType<ItemType>()
-                .AddQueryType<CatalogQuery>();
+                .AddQueryType<CatalogQueryType>()
+                .AddType<CategoryInputType>()
+                .AddMutationType<CatalogMutationType>();
 
             return services;
         }
