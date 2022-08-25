@@ -1,6 +1,4 @@
-﻿using CatalogService.BLL.Entities;
-
-namespace CatalogService.BLL.GraphQL
+﻿namespace CatalogService.BLL.GraphQL
 {
     public class CatalogMutation
     {

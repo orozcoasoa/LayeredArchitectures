@@ -85,7 +85,7 @@ namespace CartingService.UnitTests
             repoMock.Setup(s => s.ExistsCart(newGuid)).Returns(Task.FromResult(true));
             repoMock.Setup(s => s.AddItemToCart(newGuid, It.IsAny<CartItemDAO>()));
             repoMock.Setup(s => s.GetCart(newGuid))
-                .Returns(Task.FromResult(GetCartWithItems(newGuid,1)));
+                .Returns(Task.FromResult(GetCartWithItems(newGuid, 1)));
 
             var cartingService = new CartingRepoService(repoMock.Object, _mapper);
             var cart = await cartingService.InitializeCart(newGuid, item);
@@ -256,7 +256,7 @@ namespace CartingService.UnitTests
             for (int i = 1; i <= numItems; i++)
                 cart.Items.Add(new CartItemDAO()
                 {
-                    Item = new ItemDAO() { Name = "Item" + i, Id = i, Image = null, Price=i*10 },
+                    Item = new ItemDAO() { Name = "Item" + i, Id = i, Image = null, Price = i * 10 },
                     Quantity = i
                 });
             return cart;

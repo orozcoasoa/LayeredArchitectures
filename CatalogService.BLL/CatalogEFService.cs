@@ -1,9 +1,9 @@
-﻿using AutoMapper;
+﻿using System.Linq.Expressions;
+using AutoMapper;
 using CatalogService.BLL.Entities;
 using CatalogService.BLL.Extensions;
 using MessagingService;
 using Microsoft.EntityFrameworkCore;
-using System.Linq.Expressions;
 
 namespace CatalogService.BLL
 {
@@ -156,7 +156,8 @@ namespace CatalogService.BLL
             _mqClient.PublishItemUpdated(_mapper.Map<MessagingService.Contracts.Item>(itemDAO));
             return _mapper.Map<Item>(itemDAO);
         }
-        public async Task<List<Item>> GetAllItems() {
+        public async Task<List<Item>> GetAllItems()
+        {
             var items = await _context.Items.ToListAsync();
             return _mapper.Map<List<Item>>(items);
         }

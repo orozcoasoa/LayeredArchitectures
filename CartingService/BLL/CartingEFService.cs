@@ -25,7 +25,7 @@ namespace CartingService.BLL
                 var cart = await InitializeCart(cartId, item);
                 cartDAO = _mapper.Map<CartDAO>(cart);
             }
-            else if(item != null)
+            else if (item != null)
             {
                 var existingItem = cartDAO.Items.Find(i => i.Item.Id == item.Id);
                 if (existingItem != null)
@@ -60,7 +60,7 @@ namespace CartingService.BLL
         public async Task<bool> ExistsItemOnCart(Guid cartId, int itemId)
         {
             return await _context.Carts
-                        .Where(c => c.Id == cartId && 
+                        .Where(c => c.Id == cartId &&
                                 c.Items.Exists(i => i.Item.Id == itemId))
                         .AnyAsync();
         }

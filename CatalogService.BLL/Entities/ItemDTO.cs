@@ -17,7 +17,7 @@ namespace CatalogService.BLL.Entities
         [Range(0, (double)decimal.MaxValue)]
         public decimal Price { get; set; }
         [Required]
-        [Range (1, int.MaxValue)]
+        [Range(1, int.MaxValue)]
         public int Amount { get; set; }
     }
 }

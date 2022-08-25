@@ -11,7 +11,7 @@ namespace CatalogService.BLL.Entities
         public int Page { get; set; } = DEFAULT_PAGE_NUMBER;
         [FromQuery(Name = "limit")]
         public int Limit { get; set; } = DEFAULT_PAGE_SIZE;
-        [FromQuery(Name ="categoryid")]
+        [FromQuery(Name = "categoryid")]
         public int CategoryId { get; set; }
         [FromQuery(Name = "pricemin")]
         public decimal? PriceMin { get; set; }

@@ -1,5 +1,4 @@
 ﻿using CatalogService.BLL.Entities;
-using CatalogService.DAL;
 
 namespace CatalogService.BLL.GraphQL
 {

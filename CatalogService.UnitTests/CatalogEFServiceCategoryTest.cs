@@ -182,7 +182,7 @@ namespace CatalogService.UnitTests
                 Name = "Buckets",
                 Image = "",
             };
-            await Assert.ThrowsAsync<KeyNotFoundException>(() => service.UpdateCategory(10,categoryUpdated));
+            await Assert.ThrowsAsync<KeyNotFoundException>(() => service.UpdateCategory(10, categoryUpdated));
         }
 
         private ICatalogService GetService()

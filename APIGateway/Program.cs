@@ -1,13 +1,13 @@
 ﻿using APIGateway.Aggregators;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Ocelot.Cache.CacheManager;
 using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
-using Ocelot.Cache.CacheManager;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Builder;
 
 namespace APIGateway
 {
@@ -15,7 +15,7 @@ namespace APIGateway
     {
         private const string authenticationProviderKey = "AzAdKey";
 
-        public static void Main(string[] args)
+        public static void Main()
         {
             new WebHostBuilder()
             .UseKestrel()
@@ -29,7 +29,8 @@ namespace APIGateway
                     .AddJsonFile("ocelot.json", false, true)
                     .AddEnvironmentVariables();
             })
-            .ConfigureServices(s => {
+            .ConfigureServices(s =>
+            {
                 s.AddAuthentication()
                 .AddJwtBearer(authenticationProviderKey, opt =>
                 {

@@ -1,9 +1,9 @@
-﻿using CatalogService.BLL.GraphQL;
+﻿using System.Reflection;
+using CatalogService.BLL.GraphQL;
 using MessagingService;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
-using System.Reflection;
 
 namespace CatalogService.BLL.Setup
 {

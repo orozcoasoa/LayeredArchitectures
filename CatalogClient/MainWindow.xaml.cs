@@ -1,8 +1,5 @@
-﻿using CatalogService.BLL.Entities;
-using Microsoft.Identity.Client;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
@@ -11,6 +8,8 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
+using CatalogService.BLL.Entities;
+using Microsoft.Identity.Client;
 
 namespace CatalogClient
 {

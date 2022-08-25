@@ -22,7 +22,7 @@ namespace CatalogService.BLL
             ItemCount = itemCount;
             CurrentPageNumber = pageNumber;
             PageSize = pageSize;
-            PageCount = (PageSize > 0 ? (int)Math.Ceiling(ItemCount/(double)PageSize) : 0 );
+            PageCount = (PageSize > 0 ? (int)Math.Ceiling(ItemCount / (double)PageSize) : 0);
             _list.AddRange(items);
         }
 

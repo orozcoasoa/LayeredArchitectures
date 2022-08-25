@@ -1,8 +1,8 @@
+using System.Reflection;
 using CartingService.BLL.Setup;
 using CartingService.DAL;
 using CartingService.WebAPI;
 using Microsoft.OpenApi.Models;
-using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 

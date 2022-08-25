@@ -1,8 +1,8 @@
-﻿using MessagingService.Contracts;
+﻿using System.Text;
+using System.Text.Json;
+using MessagingService.Contracts;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using System.Text;
-using System.Text.Json;
 
 namespace MessagingService
 {
@@ -41,7 +41,7 @@ namespace MessagingService
             var body = Encoding.UTF8.GetBytes(message);
             _channel.BasicPublish(exchangeName, itemUpdateRoutingKey, null, body);
         }
-        public void SubscribeToItemDeletes(Func<int,bool> action)
+        public void SubscribeToItemDeletes(Func<int, bool> action)
         {
             _channel.ExchangeDeclare(exchangeName, ExchangeType.Topic);
             var queueName = _channel.QueueDeclare().QueueName;
@@ -95,7 +95,7 @@ namespace MessagingService
                 _channel.Dispose();
                 _connection.Dispose();
             }
-                
+
         }
     }
 }
