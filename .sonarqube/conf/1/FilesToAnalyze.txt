@@ -1,0 +1,4 @@
+﻿C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\MessagingService\Contracts\Item.cs
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\MessagingService\IMQClient.cs
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\MessagingService\RabbitMQClient.cs
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\MessagingService\RabbitMQSettings.cs

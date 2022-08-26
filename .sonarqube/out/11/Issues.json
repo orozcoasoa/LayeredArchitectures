@@ -1,0 +1,642 @@
+{
+  "$schema": "http://json.schemastore.org/sarif-1.0.0",
+  "version": "1.0.0",
+  "runs": [
+    {
+      "tool": {
+        "name": "Microsoft (R) Visual C# Compiler",
+        "version": "4.3.0.0",
+        "fileVersion": "4.3.0-3.22365.10 (dd078d4e)",
+        "semanticVersion": "4.3.0",
+        "language": "en-US"
+      },
+      "results": [
+        {
+          "ruleId": "CS8602",
+          "level": "warning",
+          "message": "Dereference of a possibly null reference.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Alan_Orozco/source/repos/NETMentoringProgram/CatalogService.WebAPI.Tests/CategoriesControllerTest.cs",
+                "region": {
+                  "startLine": 30,
+                  "startColumn": 51,
+                  "endLine": 30,
+                  "endColumn": 59
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8600",
+          "level": "warning",
+          "message": "Converting null literal or possible null value to non-nullable type.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Alan_Orozco/source/repos/NETMentoringProgram/CatalogService.WebAPI.Tests/CategoriesControllerTest.cs",
+                "region": {
+                  "startLine": 32,
+                  "startColumn": 30,
+                  "endLine": 32,
+                  "endColumn": 67
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8604",
+          "level": "warning",
+          "message": "Possible null reference argument for parameter 'source' in 'int Enumerable.Count<Category>(IEnumerable<Category> source)'.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Alan_Orozco/source/repos/NETMentoringProgram/CatalogService.WebAPI.Tests/CategoriesControllerTest.cs",
+                "region": {
+                  "startLine": 33,
+                  "startColumn": 29,
+                  "endLine": 33,
+                  "endColumn": 39
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8602",
+          "level": "warning",
+          "message": "Dereference of a possibly null reference.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Alan_Orozco/source/repos/NETMentoringProgram/CatalogService.WebAPI.Tests/ItemsControllerTest.cs",
+                "region": {
+                  "startLine": 30,
+                  "startColumn": 51,
+                  "endLine": 30,
+                  "endColumn": 59
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8600",
+          "level": "warning",
+          "message": "Converting null literal or possible null value to non-nullable type.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Alan_Orozco/source/repos/NETMentoringProgram/CatalogService.WebAPI.Tests/ItemsControllerTest.cs",
+                "region": {
+                  "startLine": 32,
+                  "startColumn": 24,
+                  "endLine": 32,
+                  "endColumn": 44
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8602",
+          "level": "warning",
+          "message": "Dereference of a possibly null reference.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Alan_Orozco/source/repos/NETMentoringProgram/CatalogService.WebAPI.Tests/ItemsControllerTest.cs",
+                "region": {
+                  "startLine": 33,
+                  "startColumn": 43,
+                  "endLine": 33,
+                  "endColumn": 47
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8600",
+          "level": "warning",
+          "message": "Converting null literal or possible null value to non-nullable type.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Alan_Orozco/source/repos/NETMentoringProgram/CatalogService.WebAPI.Tests/ItemsControllerTest.cs",
+                "region": {
+                  "startLine": 41,
+                  "startColumn": 42,
+                  "endLine": 41,
+                  "endColumn": 52
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8620",
+          "level": "warning",
+          "message": "Argument of type 'Task<Item?>' cannot be used for parameter 'value' of type 'Task<Item>' in 'IReturnsResult<ICatalogService> IReturns<ICatalogService, Task<Item>>.Returns(Task<Item> value)' due to differences in the nullability of reference types.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Alan_Orozco/source/repos/NETMentoringProgram/CatalogService.WebAPI.Tests/ItemsControllerTest.cs",
+                "region": {
+                  "startLine": 41,
+                  "startColumn": 26,
+                  "endLine": 41,
+                  "endColumn": 53
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8602",
+          "level": "warning",
+          "message": "Dereference of a possibly null reference.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Alan_Orozco/source/repos/NETMentoringProgram/CatalogService.WebAPI.Tests/ItemsControllerTest.cs",
+                "region": {
+                  "startLine": 48,
+                  "startColumn": 57,
+                  "endLine": 48,
+                  "endColumn": 71
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8602",
+          "level": "warning",
+          "message": "Dereference of a possibly null reference.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Alan_Orozco/source/repos/NETMentoringProgram/CatalogService.WebAPI.Tests/CategoriesControllerTest.cs",
+                "region": {
+                  "startLine": 47,
+                  "startColumn": 51,
+                  "endLine": 47,
+                  "endColumn": 59
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8600",
+          "level": "warning",
+          "message": "Converting null literal or possible null value to non-nullable type.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Alan_Orozco/source/repos/NETMentoringProgram/CatalogService.WebAPI.Tests/CategoriesControllerTest.cs",
+                "region": {
+                  "startLine": 49,
+                  "startColumn": 30,
+                  "endLine": 49,
+                  "endColumn": 67
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8602",
+          "level": "warning",
+          "message": "Dereference of a possibly null reference.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Alan_Orozco/source/repos/NETMentoringProgram/CatalogService.WebAPI.Tests/ItemsControllerTest.cs",
+                "region": {
+                  "startLine": 63,
+                  "startColumn": 51,
+                  "endLine": 63,
+                  "endColumn": 59
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8600",
+          "level": "warning",
+          "message": "Converting null literal or possible null value to non-nullable type.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Alan_Orozco/source/repos/NETMentoringProgram/CatalogService.WebAPI.Tests/ItemsControllerTest.cs",
+                "region": {
+                  "startLine": 65,
+                  "startColumn": 31,
+                  "endLine": 65,
+                  "endColumn": 58
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8602",
+          "level": "warning",
+          "message": "Dereference of a possibly null reference.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Alan_Orozco/source/repos/NETMentoringProgram/CatalogService.WebAPI.Tests/ItemsControllerTest.cs",
+                "region": {
+                  "startLine": 66,
+                  "startColumn": 54,
+                  "endLine": 66,
+                  "endColumn": 65
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8602",
+          "level": "warning",
+          "message": "Dereference of a possibly null reference.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Alan_Orozco/source/repos/NETMentoringProgram/CatalogService.WebAPI.Tests/CategoriesControllerTest.cs",
+                "region": {
+                  "startLine": 69,
+                  "startColumn": 56,
+                  "endLine": 69,
+                  "endColumn": 69
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8600",
+          "level": "warning",
+          "message": "Converting null literal or possible null value to non-nullable type.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Alan_Orozco/source/repos/NETMentoringProgram/CatalogService.WebAPI.Tests/CategoriesControllerTest.cs",
+                "region": {
+                  "startLine": 71,
+                  "startColumn": 28,
+                  "endLine": 71,
+                  "endColumn": 57
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8602",
+          "level": "warning",
+          "message": "Dereference of a possibly null reference.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Alan_Orozco/source/repos/NETMentoringProgram/CatalogService.WebAPI.Tests/CategoriesControllerTest.cs",
+                "region": {
+                  "startLine": 72,
+                  "startColumn": 29,
+                  "endLine": 72,
+                  "endColumn": 37
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8602",
+          "level": "warning",
+          "message": "Dereference of a possibly null reference.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Alan_Orozco/source/repos/NETMentoringProgram/CatalogService.WebAPI.Tests/CategoriesControllerTest.cs",
+                "region": {
+                  "startLine": 87,
+                  "startColumn": 58,
+                  "endLine": 87,
+                  "endColumn": 73
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8602",
+          "level": "warning",
+          "message": "Dereference of a possibly null reference.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Alan_Orozco/source/repos/NETMentoringProgram/CatalogService.WebAPI.Tests/CategoriesControllerTest.cs",
+                "region": {
+                  "startLine": 101,
+                  "startColumn": 58,
+                  "endLine": 101,
+                  "endColumn": 73
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8600",
+          "level": "warning",
+          "message": "Converting null literal or possible null value to non-nullable type.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Alan_Orozco/source/repos/NETMentoringProgram/CatalogService.WebAPI.Tests/ItemsControllerTest.cs",
+                "region": {
+                  "startLine": 74,
+                  "startColumn": 42,
+                  "endLine": 74,
+                  "endColumn": 59
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8620",
+          "level": "warning",
+          "message": "Argument of type 'Task<ItemDetails?>' cannot be used for parameter 'value' of type 'Task<ItemDetails>' in 'IReturnsResult<ICatalogService> IReturns<ICatalogService, Task<ItemDetails>>.Returns(Task<ItemDetails> value)' due to differences in the nullability of reference types.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Alan_Orozco/source/repos/NETMentoringProgram/CatalogService.WebAPI.Tests/ItemsControllerTest.cs",
+                "region": {
+                  "startLine": 74,
+                  "startColumn": 26,
+                  "endLine": 74,
+                  "endColumn": 60
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8602",
+          "level": "warning",
+          "message": "Dereference of a possibly null reference.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Alan_Orozco/source/repos/NETMentoringProgram/CatalogService.WebAPI.Tests/ItemsControllerTest.cs",
+                "region": {
+                  "startLine": 81,
+                  "startColumn": 57,
+                  "endLine": 81,
+                  "endColumn": 71
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8602",
+          "level": "warning",
+          "message": "Dereference of a possibly null reference.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Alan_Orozco/source/repos/NETMentoringProgram/CatalogService.WebAPI.Tests/ItemsControllerTest.cs",
+                "region": {
+                  "startLine": 100,
+                  "startColumn": 56,
+                  "endLine": 100,
+                  "endColumn": 69
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8600",
+          "level": "warning",
+          "message": "Converting null literal or possible null value to non-nullable type.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Alan_Orozco/source/repos/NETMentoringProgram/CatalogService.WebAPI.Tests/ItemsControllerTest.cs",
+                "region": {
+                  "startLine": 102,
+                  "startColumn": 24,
+                  "endLine": 102,
+                  "endColumn": 49
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8602",
+          "level": "warning",
+          "message": "Dereference of a possibly null reference.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Alan_Orozco/source/repos/NETMentoringProgram/CatalogService.WebAPI.Tests/ItemsControllerTest.cs",
+                "region": {
+                  "startLine": 103,
+                  "startColumn": 29,
+                  "endLine": 103,
+                  "endColumn": 33
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8602",
+          "level": "warning",
+          "message": "Dereference of a possibly null reference.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Alan_Orozco/source/repos/NETMentoringProgram/CatalogService.WebAPI.Tests/ItemsControllerTest.cs",
+                "region": {
+                  "startLine": 118,
+                  "startColumn": 58,
+                  "endLine": 118,
+                  "endColumn": 73
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        },
+        {
+          "ruleId": "CS8602",
+          "level": "warning",
+          "message": "Dereference of a possibly null reference.",
+          "locations": [
+            {
+              "resultFile": {
+                "uri": "file:///C:/Users/Alan_Orozco/source/repos/NETMentoringProgram/CatalogService.WebAPI.Tests/ItemsControllerTest.cs",
+                "region": {
+                  "startLine": 132,
+                  "startColumn": 58,
+                  "endLine": 132,
+                  "endColumn": 73
+                }
+              }
+            }
+          ],
+          "properties": {
+            "warningLevel": 1
+          }
+        }
+      ],
+      "rules": {
+        "CS8600": {
+          "id": "CS8600",
+          "shortDescription": "Converting null literal or possible null value to non-nullable type.",
+          "defaultLevel": "warning",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS8600)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry"
+            ]
+          }
+        },
+        "CS8602": {
+          "id": "CS8602",
+          "shortDescription": "Dereference of a possibly null reference.",
+          "defaultLevel": "warning",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS8602)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry"
+            ]
+          }
+        },
+        "CS8604": {
+          "id": "CS8604",
+          "shortDescription": "Possible null reference argument.",
+          "defaultLevel": "warning",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS8604)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry"
+            ]
+          }
+        },
+        "CS8620": {
+          "id": "CS8620",
+          "shortDescription": "Argument cannot be used for parameter due to differences in the nullability of reference types.",
+          "defaultLevel": "warning",
+          "helpUri": "https://msdn.microsoft.com/query/roslyn.query?appId=roslyn&k=k(CS8620)",
+          "properties": {
+            "category": "Compiler",
+            "isEnabledByDefault": true,
+            "tags": [
+              "Compiler",
+              "Telemetry"
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

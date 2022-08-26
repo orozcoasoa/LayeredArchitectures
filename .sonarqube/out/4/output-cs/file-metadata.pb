@@ -1,0 +1,9 @@
+o
+fC:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService.UnitTests\CartingEFServiceTest.csutf-8q
+hC:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService.UnitTests\CartingRepoServiceTest.csutf-8o
+fC:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService.UnitTests\NoSQLCartingRepoTest.csutf-8a
+XC:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService.UnitTests\Usings.csutf-8ƒ
+xC:\Users\Alan_Orozco\.nuget\packages\microsoft.net.test.sdk\17.1.0\build\netcoreapp2.1\Microsoft.NET.Test.Sdk.Program.csutf-8–
+ŠC:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService.UnitTests\obj\Debug\net6.0\CartingService.UnitTests.GlobalUsings.g.csutf-8š
+ŽC:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService.UnitTests\obj\Debug\net6.0\.NETCoreApp,Version=v6.0.AssemblyAttributes.csutf-8”
+ˆC:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService.UnitTests\obj\Debug\net6.0\CartingService.UnitTests.AssemblyInfo.csutf-8

@@ -1,0 +1,9 @@
+X
+OC:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CatalogClient\App.xaml.csutf-8\
+SC:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CatalogClient\AssemblyInfo.csutf-8_
+VC:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CatalogClient\MainWindow.xaml.csutf-8w
+lC:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CatalogClient\obj\Debug\net6.0-windows\MainWindow.g.csutf-8p
+eC:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CatalogClient\obj\Debug\net6.0-windows\App.g.csutf-8‚
+wC:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CatalogClient\obj\Debug\net6.0-windows\CatalogClient_Content.g.csutf-8—
+‹C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CatalogClient\obj\Debug\net6.0-windows\.NETCoreApp,Version=v6.0.AssemblyAttributes.csutf-8…
+zC:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CatalogClient\obj\Debug\net6.0-windows\CatalogClient.AssemblyInfo.csutf-8

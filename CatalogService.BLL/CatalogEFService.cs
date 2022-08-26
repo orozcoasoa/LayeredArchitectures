@@ -83,12 +83,12 @@ namespace CatalogService.BLL
                             .FirstOrDefaultAsync();
             return _mapper.Map<Category>(category);
         }
-        public async Task UpdateCategory(int id, CategoryDTO categoryDTO)
+        public async Task UpdateCategory(int id, CategoryDTO category)
         {
-            var category = _mapper.Map<Category>(categoryDTO);
-            category.Id = id;
-            if (category.Image == null) category.Image = "";
-            ValidateParentCategory(category);
+            var categoryBLL = _mapper.Map<Category>(category);
+            categoryBLL.Id = id;
+            if (categoryBLL.Image == null) categoryBLL.Image = "";
+            ValidateParentCategory(categoryBLL);
             var categoryDAO = await _context.Categories
                                     .Where(c => c.Id == id)
                                     .Include(c => c.ParentCategory)
@@ -98,8 +98,8 @@ namespace CatalogService.BLL
                 //TODO: custom exception
                 throw new KeyNotFoundException("Category " + id + " not found.");
             }
-            _mapper.Map(category, categoryDAO);
-            if (category.ParentCategory == null)
+            _mapper.Map(categoryBLL, categoryDAO);
+            if (categoryBLL.ParentCategory == null)
                 categoryDAO.ParentCategory = null;
             await _context.SaveChangesAsync();
         }

@@ -9,15 +9,15 @@ namespace APIGateway.Aggregators
 {
     public class ItemDetailsAggregator : IDefinedAggregator
     {
-        public async Task<DownstreamResponse> Aggregate(List<HttpContext> responseHttpContexts)
+        public async Task<DownstreamResponse> Aggregate(List<HttpContext> responses)
         {
-            if (responseHttpContexts.Count != 2)
+            if (responses.Count != 2)
                 throw new ArgumentException(nameof(ItemDetailsAggregator) +
-                    " only allows to reponses, wrong setup in ocelot.json", nameof(responseHttpContexts));
+                    " only allows to reponses, wrong setup in ocelot.json", nameof(responses));
 
             var contentDict = new Dictionary<string, object>();
             var headers = new List<Header>();
-            foreach (var response in responseHttpContexts)
+            foreach (var response in responses)
             {
                 var content = await GetResponseContent(response);
                 var baseRoute = response.Items.DownstreamRoute();

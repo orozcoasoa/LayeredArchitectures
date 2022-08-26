@@ -1,0 +1,6 @@
+﻿C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CatalogClient\App.xaml
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CatalogClient\App.xaml.cs
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CatalogClient\AssemblyInfo.cs
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CatalogClient\MainWindow.xaml.cs
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CatalogClient\appsettings.json
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CatalogClient\MainWindow.xaml

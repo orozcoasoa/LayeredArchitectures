@@ -6,7 +6,7 @@ using RabbitMQ.Client.Events;
 
 namespace MessagingService
 {
-    public class RabbitMQClient : IMQClient
+    public class RabbitMQClient : IMQClient, IDisposable
     {
         private readonly string exchangeName = "items";
         private readonly string itemUpdateRoutingKey = "items.update";
