@@ -36,7 +36,7 @@ namespace CartingService.BLL
                     cartingService.ItemUpdated(item);
                 }
                 //TODO: Log failures
-                catch(Exception) { result = false; }
+                catch (Exception) { result = false; }
             }
             return result;
         }

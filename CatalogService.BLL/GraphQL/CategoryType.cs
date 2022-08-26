@@ -1,5 +1,4 @@
 ﻿using CatalogService.BLL.Entities;
-using HotChocolate.Configuration;
 
 namespace CatalogService.BLL.GraphQL
 {

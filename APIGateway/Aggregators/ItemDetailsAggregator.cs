@@ -1,36 +1,36 @@
-﻿using CatalogService.BLL.Entities;
+﻿using System.Net;
+using System.Text.Json;
+using CatalogService.BLL.Entities;
 using Microsoft.AspNetCore.Http;
 using Ocelot.Middleware;
 using Ocelot.Multiplexer;
-using System.Net;
-using System.Text.Json;
 
 namespace APIGateway.Aggregators
 {
     public class ItemDetailsAggregator : IDefinedAggregator
     {
-        public async Task<DownstreamResponse> Aggregate(List<HttpContext> responseHttpContexts)
+        public async Task<DownstreamResponse> Aggregate(List<HttpContext> responses)
         {
-            if (responseHttpContexts.Count != 2)
-                throw new ArgumentException(nameof(ItemDetailsAggregator) + 
-                    " only allows to reponses, wrong setup in ocelot.json", nameof(responseHttpContexts));
+            if (responses.Count != 2)
+                throw new ArgumentException(nameof(ItemDetailsAggregator) +
+                    " only allows to reponses, wrong setup in ocelot.json", nameof(responses));
 
             var contentDict = new Dictionary<string, object>();
             var headers = new List<Header>();
-            foreach (var response in responseHttpContexts)
+            foreach (var response in responses)
             {
                 var content = await GetResponseContent(response);
                 var baseRoute = response.Items.DownstreamRoute();
                 object baseObj;
                 if (baseRoute.Key.Contains("details"))
-                    baseObj = JsonSerializer.Deserialize<ItemDetails>(content, 
-                        new JsonSerializerOptions() { PropertyNameCaseInsensitive = true});
+                    baseObj = JsonSerializer.Deserialize<ItemDetails>(content,
+                        new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
                 else
                     baseObj = JsonSerializer.Deserialize<Item>(content,
                         new JsonSerializerOptions() { PropertyNameCaseInsensitive = true });
                 contentDict[baseRoute.Key] = baseObj;
                 MergeHeaders(response, headers);
-                
+
             }
             headers.Add(new Header("Content-Type", new List<string>() { "application/json" }));
             return new DownstreamResponse(

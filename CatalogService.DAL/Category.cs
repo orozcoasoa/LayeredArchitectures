@@ -7,7 +7,7 @@ namespace CatalogService.DAL
     {
         public int Id { get; set; }
         [Required]
-        [StringLength(50, ErrorMessage ="Max allowed characters:{0}")]
+        [StringLength(50, ErrorMessage = "Max allowed characters:{0}")]
         public string Name { get; set; }
         public string Image { get; set; }
         [ForeignKey("Category")]

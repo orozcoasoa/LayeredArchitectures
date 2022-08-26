@@ -12,7 +12,7 @@ namespace CatalogService.DAL
         public string Description { get; set; }
         //TODO URL.
         public string Image { get; set; }
-        public virtual int CategoryId { get; set; } 
+        public virtual int CategoryId { get; set; }
         [Required]
         public virtual Category Category { get; set; }
         [Required]

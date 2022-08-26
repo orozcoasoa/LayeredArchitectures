@@ -28,16 +28,16 @@ namespace CartingService.UnitTests
                     Id = _existingCartId,
                     Items = new List<CartItemDAO>()
                     {
-                        new CartItemDAO { Item = new ItemDAO() { Name = "Item1", Id = 1, Image = null, Price=10 }, 
+                        new CartItemDAO { Item = new ItemDAO() { Name = "Item1", Id = 1, Image = null, Price=10 },
                                         Quantity = 1},
-                        new CartItemDAO { Item = new ItemDAO() { Name = "Item2", Id = 2, Image = null, Price=20 }, 
+                        new CartItemDAO { Item = new ItemDAO() { Name = "Item2", Id = 2, Image = null, Price=20 },
                                         Quantity = 2}
                     }
                 }
                );
 
             _context.SaveChanges();
-            _context.Items.Add(new ItemDAO() { Name="Item4", Id=4, Image=null, Price=40});
+            _context.Items.Add(new ItemDAO() { Name = "Item4", Id = 4, Image = null, Price = 40 });
             _context.SaveChanges();
 
             if (_mapper == null)
@@ -59,7 +59,7 @@ namespace CartingService.UnitTests
         {
             var cartingService = new CartingEFService(_context, _mapper);
             var newGuid = Guid.NewGuid();
-            var item = new Item { Id = 2, Price = 30, Quantity = 3 }; 
+            var item = new Item { Id = 2, Price = 30, Quantity = 3 };
             var cart = await cartingService.InitializeCart(newGuid, item);
             Assert.Equal(newGuid, cart.Id);
             Assert.Single(cart.Items);
@@ -193,7 +193,7 @@ namespace CartingService.UnitTests
             var cartingService = new CartingEFService(_context, _mapper);
             await cartingService.RemoveItem(_existingCartId, 3);
             var cart = await cartingService.GetCart(_existingCartId);
-            Assert.Equal(2,cart.Items.Count);
+            Assert.Equal(2, cart.Items.Count);
         }
         [Fact]
         public async Task RemoveItem_NonExistingCart()

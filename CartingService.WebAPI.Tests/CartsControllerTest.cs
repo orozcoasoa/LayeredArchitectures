@@ -61,11 +61,14 @@ namespace CartingService.WebAPI.Tests
             serviceMock.Setup(s => s.AddItem(guid, itemToAdd))
                 .Returns(Task.CompletedTask);
             serviceMock.Setup(s => s.InitializeCart(guid, itemToAdd))
-                .Returns(Task.FromResult(new Cart() { Id = guid, 
-                                            Items = new List<Item>()}));
+                .Returns(Task.FromResult(new Cart()
+                {
+                    Id = guid,
+                    Items = new List<Item>()
+                }));
 
             var controller = new CartsController(serviceMock.Object);
-            var result = await controller.AddItemtoCart(guid,itemToAdd);
+            var result = await controller.AddItemtoCart(guid, itemToAdd);
             Assert.NotNull(result);
             Assert.IsType<OkResult>(result);
             var okResult = result as OkResult;
@@ -100,7 +103,7 @@ namespace CartingService.WebAPI.Tests
         {
             var guid = Guid.NewGuid();
             var serviceMock = new Mock<ICartingService>();
-            serviceMock.Setup(s => s.ExistsItemOnCart(guid,1))
+            serviceMock.Setup(s => s.ExistsItemOnCart(guid, 1))
                 .Returns(Task.FromResult(true));
             serviceMock.Setup(s => s.RemoveItem(guid, 1))
                 .Returns(Task.CompletedTask);

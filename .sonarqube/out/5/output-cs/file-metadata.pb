@@ -1,0 +1,9 @@
+v
+mC:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService.WebAPI\Controllers\V1\CartsController.csutf-8v
+mC:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService.WebAPI\Controllers\V2\CartsController.csutf-8_
+VC:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService.WebAPI\Program.csutf-8m
+dC:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService.WebAPI\SwaggerGroupByVersion.csutf-8ê
+ÑC:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService.WebAPI\obj\Debug\net6.0\CartingService.WebAPI.GlobalUsings.g.csutf-8ó
+ãC:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService.WebAPI\obj\Debug\net6.0\.NETCoreApp,Version=v6.0.AssemblyAttributes.csutf-8é
+ÇC:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService.WebAPI\obj\Debug\net6.0\CartingService.WebAPI.AssemblyInfo.csutf-8°
+ïC:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService.WebAPI\obj\Debug\net6.0\CartingService.WebAPI.MvcApplicationPartsAssemblyInfo.csutf-8

@@ -40,7 +40,7 @@ namespace CatalogService.UnitTests
                     Image = "",
                     CategoryId = 1,
                     Price = 10,
-                    Amount =1
+                    Amount = 1
                 },
                 new DAL.Item()
                 {
@@ -104,7 +104,7 @@ namespace CatalogService.UnitTests
         public async Task GetItemsByPriceRange()
         {
             var service = GetService();
-            var qry = new ItemQuery() { CategoryId = 1, Page = 1, Limit = 20, PriceMax = 15, PriceMin=5 };
+            var qry = new ItemQuery() { CategoryId = 1, Page = 1, Limit = 20, PriceMax = 15, PriceMin = 5 };
             var items = await service.GetItems(qry);
             Assert.Single(items);
         }
@@ -114,7 +114,7 @@ namespace CatalogService.UnitTests
             var service = GetService();
             var qry = new ItemQuery() { CategoryId = 1, Page = 1, Limit = 20, PriceMax = 35 };
             var items = await service.GetItems(qry);
-            Assert.Equal(2,items.Count());
+            Assert.Equal(2, items.Count());
         }
         [Fact]
         public async Task GetItemsByPriceRange_MinPrice()
@@ -303,7 +303,7 @@ namespace CatalogService.UnitTests
                 Price = -5,
                 Amount = 1
             };
-            await Assert.ThrowsAsync<ArgumentException>(() => service.UpdateItem(1,item));
+            await Assert.ThrowsAsync<ArgumentException>(() => service.UpdateItem(1, item));
         }
         [Fact]
         public async Task UpdateItem_InvalidAmount()
@@ -318,7 +318,7 @@ namespace CatalogService.UnitTests
                 Price = 5,
                 Amount = -1
             };
-            await Assert.ThrowsAsync<ArgumentException>(() => service.UpdateItem(1,item));
+            await Assert.ThrowsAsync<ArgumentException>(() => service.UpdateItem(1, item));
         }
         [Fact]
         public async Task UpdateItem_InvalidCategory()
@@ -332,7 +332,7 @@ namespace CatalogService.UnitTests
                 Price = 5,
                 Amount = 1
             };
-            await Assert.ThrowsAsync<ArgumentException>(() => service.UpdateItem(1,item));
+            await Assert.ThrowsAsync<ArgumentException>(() => service.UpdateItem(1, item));
         }
 
         private ICatalogService GetService()

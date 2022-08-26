@@ -25,8 +25,8 @@ namespace CartingService.UnitTests
             BsonMapper.Global.Entity<CartItemDAO>().DbRef(i => i.Item, NoSQLCartingRepository.items);
 
             _existingCartId = Guid.NewGuid();
-            var item1 = new ItemDAO() { Name = "Item1", Id = 1, Image = null, Price = 10};
-            var item2 = new ItemDAO() { Name = "Item2", Id = 2, Image = null, Price = 20};
+            var item1 = new ItemDAO() { Name = "Item1", Id = 1, Image = null, Price = 10 };
+            var item2 = new ItemDAO() { Name = "Item2", Id = 2, Image = null, Price = 20 };
 
             var itemCart1 = new CartItemDAO
             {
@@ -96,7 +96,7 @@ namespace CartingService.UnitTests
         {
             var repo = new NoSQLCartingRepository(_db);
             var item = new ItemDAO() { Id = 3, Name = "Item3", Image = null, Price = 30 };
-            var cartItem = new CartItemDAO() { Id = 3, Item = item, Quantity = 3};
+            var cartItem = new CartItemDAO() { Id = 3, Item = item, Quantity = 3 };
             await repo.AddItemToCart(_existingCartId, cartItem);
 
             var cart = await repo.GetCart(_existingCartId);
@@ -108,7 +108,7 @@ namespace CartingService.UnitTests
         {
             var repo = new NoSQLCartingRepository(_db);
             var item = new ItemDAO() { Id = 3, Name = "Item3", Image = null, Price = 30 };
-            var cartItem = new CartItemDAO() { Item = item, Quantity = 3};
+            var cartItem = new CartItemDAO() { Item = item, Quantity = 3 };
             var newGuid = Guid.NewGuid();
             await repo.AddItemToCart(newGuid, cartItem);
 
@@ -120,7 +120,7 @@ namespace CartingService.UnitTests
         {
             var repo = new NoSQLCartingRepository(_db);
             var item = new ItemDAO() { Id = 2, Name = "Item2", Image = null, Price = 20 };
-            var cartItem = new CartItemDAO { Item = item, Quantity = 2};
+            var cartItem = new CartItemDAO { Item = item, Quantity = 2 };
             await repo.AddItemToCart(_existingCartId, cartItem);
 
             var cart = await repo.GetCart(_existingCartId);

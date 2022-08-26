@@ -2,8 +2,6 @@
 using CatalogService.BLL.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Graph;
-using Microsoft.Identity.Web.Resource;
 
 namespace CatalogService.WebAPI.Controllers
 {
@@ -28,7 +26,7 @@ namespace CatalogService.WebAPI.Controllers
             return Ok(items);
         }
 
-        [HttpGet("{id}",Name = nameof(GetItem))]
+        [HttpGet("{id}", Name = nameof(GetItem))]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -53,15 +51,15 @@ namespace CatalogService.WebAPI.Controllers
         }
 
         [Authorize(Roles = "Catalog.Manager")]
-        [HttpPost(Name =nameof(AddItem))]
+        [HttpPost(Name = nameof(AddItem))]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<Item>> AddItem([FromBody] ItemDTO item)
         {
-                var createdItem = await _service.AddItem(item);
-                return CreatedAtAction(nameof(AddItem), new { id = createdItem.Id }, createdItem);
+            var createdItem = await _service.AddItem(item);
+            return CreatedAtAction(nameof(AddItem), new { id = createdItem.Id }, createdItem);
         }
 
         [Authorize(Roles = "Catalog.Manager")]

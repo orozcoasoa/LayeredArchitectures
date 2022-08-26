@@ -76,7 +76,7 @@ namespace CartingService.BLL
             }
             else
                 cartDAO.Items = new List<CartItemDAO>() { };
-            
+
             return _mapper.Map<Cart>(cartDAO);
         }
         public async Task RemoveItem(Guid cartId, int itemId)

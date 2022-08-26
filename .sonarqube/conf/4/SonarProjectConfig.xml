@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SonarProjectConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.sonarsource.com/msbuild/analyzer/2021/1">
+  <AnalysisConfigPath>C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\.sonarqube\conf\SonarQubeAnalysisConfig.xml</AnalysisConfigPath>
+  <ProjectPath>C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService.UnitTests\CartingService.UnitTests.csproj</ProjectPath>
+  <FilesToAnalyzePath>C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\.sonarqube\conf\4\FilesToAnalyze.txt</FilesToAnalyzePath>
+  <OutPath>C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\.sonarqube\out\4</OutPath>
+  <ProjectType>Test</ProjectType>
+  <TargetFramework>net6.0</TargetFramework>
+</SonarProjectConfig>

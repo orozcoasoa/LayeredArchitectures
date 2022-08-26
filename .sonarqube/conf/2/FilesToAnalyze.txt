@@ -1,0 +1,15 @@
+﻿C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService\BLL\Cart.cs
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService\BLL\CartingEFService.cs
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService\BLL\CartingRepoService.cs
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService\BLL\ICartingService.cs
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService\BLL\Item.cs
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService\BLL\MQListener.cs
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService\BLL\Setup\CartingProfile.cs
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService\BLL\Setup\Configure.cs
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService\DAL\CartingDbContext.cs
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService\DAL\Configure.cs
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService\DAL\Entities\CartDAO.cs
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService\DAL\Entities\CartItemDAO.cs
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService\DAL\Entities\ItemDAO.cs
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService\DAL\ICartingRepository.cs
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService\DAL\NoSQLCartingRepository.cs

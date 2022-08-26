@@ -1,5 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
-using System.Windows;
+﻿using System.Windows;
+using Microsoft.Extensions.Configuration;
 
 namespace CatalogClient
 {
@@ -18,6 +18,6 @@ namespace CatalogClient
                 .Build();
         }
 
-        
+
     }
 }

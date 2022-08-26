@@ -1,0 +1,11 @@
+﻿C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CatalogService.WebAPI\Controllers\CategoriesController.cs
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CatalogService.WebAPI\Controllers\ItemsController.cs
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CatalogService.WebAPI\Program.cs
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CatalogService.WebAPI\obj\Debug\net6.0\CatalogService.WebAPI.GlobalUsings.g.cs
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CatalogService.WebAPI\obj\Debug\net6.0\.NETCoreApp,Version=v6.0.AssemblyAttributes.cs
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CatalogService.WebAPI\obj\Debug\net6.0\CatalogService.WebAPI.AssemblyInfo.cs
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CatalogService.WebAPI\obj\Debug\net6.0\CatalogService.WebAPI.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CatalogService.WebAPI\appsettings.Development.json
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CatalogService.WebAPI\appsettings.json
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CatalogService.WebAPI\sample.db
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CatalogService.WebAPI\Properties\launchSettings.json

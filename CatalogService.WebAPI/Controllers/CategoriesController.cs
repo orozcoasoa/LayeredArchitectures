@@ -1,6 +1,5 @@
 ﻿using CatalogService.BLL;
 using CatalogService.BLL.Entities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CatalogService.WebAPI.Controllers

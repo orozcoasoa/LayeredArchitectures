@@ -18,7 +18,7 @@ namespace CatalogService.WebAPI.Tests
                 {
                     new Category() {Id =1, Name="Category1"},
                     new Category() {Id =2, Name="Category2", Image=""},
-                    new Category() {Id =3, Name="Category3", Image="", 
+                    new Category() {Id =3, Name="Category3", Image="",
                         ParentCategory=new Category() {Id = 1 } },
                 }));
 
@@ -55,8 +55,8 @@ namespace CatalogService.WebAPI.Tests
             var newCategory = new CategoryDTO() { Name = "Category1" };
             var serviceMock = new Mock<ICatalogService>();
             serviceMock.Setup(s => s.AddCategory(newCategory))
-                .Returns(Task.FromResult(new Category() 
-                { 
+                .Returns(Task.FromResult(new Category()
+                {
                     Id = 1,
                     Name = newCategory.Name
                 }));
@@ -76,11 +76,11 @@ namespace CatalogService.WebAPI.Tests
         {
             var updatedCategory = new CategoryDTO() { Name = "Category1" };
             var serviceMock = new Mock<ICatalogService>();
-            serviceMock.Setup(s => s.UpdateCategory(1,updatedCategory))
+            serviceMock.Setup(s => s.UpdateCategory(1, updatedCategory))
                 .Returns(Task.CompletedTask);
 
             var controller = new CategoriesController(serviceMock.Object);
-            var result = await controller.UpdateCategory(1,updatedCategory);
+            var result = await controller.UpdateCategory(1, updatedCategory);
             Assert.NotNull(result);
             Assert.IsType<NoContentResult>(result);
             var noContentResult = result as NoContentResult;

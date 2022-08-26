@@ -1,0 +1,5 @@
+﻿C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\APIGateway\Aggregators\ItemDetailsAggregator.cs
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\APIGateway\Program.cs
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\APIGateway\appsettings.Development.json
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\APIGateway\appsettings.json
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\APIGateway\ocelot.json

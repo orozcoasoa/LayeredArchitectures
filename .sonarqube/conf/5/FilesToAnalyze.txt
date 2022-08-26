@@ -1,0 +1,12 @@
+﻿C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService.WebAPI\Controllers\V1\CartsController.cs
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService.WebAPI\Controllers\V2\CartsController.cs
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService.WebAPI\Program.cs
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService.WebAPI\SwaggerGroupByVersion.cs
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService.WebAPI\obj\Debug\net6.0\CartingService.WebAPI.GlobalUsings.g.cs
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService.WebAPI\obj\Debug\net6.0\.NETCoreApp,Version=v6.0.AssemblyAttributes.cs
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService.WebAPI\obj\Debug\net6.0\CartingService.WebAPI.AssemblyInfo.cs
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService.WebAPI\obj\Debug\net6.0\CartingService.WebAPI.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService.WebAPI\appsettings.Development.json
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService.WebAPI\appsettings.json
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService.WebAPI\Sample.db
+C:\Users\Alan_Orozco\source\repos\NETMentoringProgram\CartingService.WebAPI\Properties\launchSettings.json
